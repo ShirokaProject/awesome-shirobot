@@ -1,0 +1,126 @@
+{
+  "$schema": "./schema/list.v1.schema.json",
+  "schemaVersion": 1,
+  "plugins": [
+    {
+      "id": "ai-chat",
+      "kind": "plugin",
+      "name": "AIChat",
+      "description": "支持 OpenAI-compatible 服务、多模型、共享上下文和图片或文件输入的 AI 聊天插件。",
+      "category": "ai",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat",
+      "license": "NOASSERTION",
+      "compatibility": {
+        "shirobot": ">=0.6.0-rc1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.AiChatPlugin.dll"
+      },
+      "deprecated": false
+    },
+    {
+      "id": "avalonia-demo",
+      "kind": "plugin",
+      "name": "AvaloniaDemo",
+      "description": "演示 ShiroBot Avalonia UI、AXAML 控件和图片渲染能力的示例插件。",
+      "category": "example",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.AvaloniaDemo",
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": ">=0.6.0 <1.0.0",
+        "framework": "net10.0"
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.AvaloniaDemoPlugin.dll"
+      },
+      "deprecated": false
+    },
+    {
+      "id": "demo-plugin",
+      "kind": "plugin",
+      "name": "DemoPlugin",
+      "description": "展示好友和群命令、消息回复订阅、事件处理及插件配置的示例插件。",
+      "category": "example",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.DemoPlugin",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.5.0 <1.0.0",
+        "framework": "net10.0"
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.DemoPlugin.dll"
+      },
+      "deprecated": false
+    },
+    {
+      "id": "file-link",
+      "kind": "plugin",
+      "name": "FileLink",
+      "description": "获取群文件直链，并支持从直链下载文件后保存到群文件的实用插件。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.6.0-rc1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.FileLink.dll"
+      },
+      "deprecated": false
+    },
+    {
+      "id": "video-previewer",
+      "kind": "plugin",
+      "name": "VideoPreviewer",
+      "description": "通过回复视频消息生成视频预览的媒体辅助插件。",
+      "category": "media",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.6.0-rc1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.VideoPreviewer.dll"
+      },
+      "deprecated": false
+    }
+  ]
+}

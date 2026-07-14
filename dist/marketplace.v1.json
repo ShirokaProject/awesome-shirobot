@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-14T09:34:18.751Z",
+  "source": "https://github.com/ShirokaProject/awesome-shirobot/blob/main/list.json",
+  "plugins": [
+    {
+      "id": "ai-chat",
+      "kind": "plugin",
+      "name": "AIChat",
+      "description": "支持 OpenAI-compatible 服务、多模型、共享上下文和图片或文件输入的 AI 聊天插件。",
+      "category": "ai",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat",
+      "license": "NOASSERTION",
+      "compatibility": {
+        "shirobot": ">=0.6.0-rc1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.AiChatPlugin.dll",
+        "version": "1.1.0",
+        "prerelease": false,
+        "publishedAt": "2026-06-19T13:09:09.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/tag/v1.1.0",
+        "downloadCount": 1,
+        "asset": {
+          "name": "ShiroBot.AiChatPlugin.dll",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/download/v1.1.0/ShiroBot.AiChatPlugin.dll",
+          "size": 155136,
+          "digest": "sha256:76808fae9bd3c97d40c8c43f4f9d66ffd57fe5709058956511b74e829659562a"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "avalonia-demo",
+      "kind": "plugin",
+      "name": "AvaloniaDemo",
+      "description": "演示 ShiroBot Avalonia UI、AXAML 控件和图片渲染能力的示例插件。",
+      "category": "example",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.AvaloniaDemo",
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": ">=0.6.0 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.AvaloniaDemoPlugin.dll",
+        "version": "0.6",
+        "prerelease": false,
+        "publishedAt": "2026-06-17T09:22:04.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.AvaloniaDemo/releases/tag/v0.6",
+        "downloadCount": 0,
+        "asset": {
+          "name": "ShiroBot.AvaloniaDemoPlugin.dll",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.AvaloniaDemo/releases/download/v0.6/ShiroBot.AvaloniaDemoPlugin.dll",
+          "size": 28672,
+          "digest": "sha256:dc050d404420f2485ba3937990eec8595daf7e100f76af0ac6c977364d17c2a5"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "demo-plugin",
+      "kind": "plugin",
+      "name": "DemoPlugin",
+      "description": "展示好友和群命令、消息回复订阅、事件处理及插件配置的示例插件。",
+      "category": "example",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.DemoPlugin",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.5.0 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.DemoPlugin.dll",
+        "version": "0.5",
+        "prerelease": false,
+        "publishedAt": "2026-06-16T09:52:11.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.DemoPlugin/releases/tag/v0.5",
+        "downloadCount": 0,
+        "asset": {
+          "name": "ShiroBot.Plugin.DemoPlugin.dll",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.DemoPlugin/releases/download/v0.5/ShiroBot.Plugin.DemoPlugin.dll",
+          "size": 15872,
+          "digest": "sha256:d732a0db474a433f0af342229b016b1141eb0d447c75da300fef02968ddc33e4"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "file-link",
+      "kind": "plugin",
+      "name": "FileLink",
+      "description": "获取群文件直链，并支持从直链下载文件后保存到群文件的实用插件。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.6.0-rc1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.FileLink.dll",
+        "version": "1.1.0",
+        "prerelease": false,
+        "publishedAt": "2026-06-19T16:11:54.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink/releases/tag/v1.1.0",
+        "downloadCount": 0,
+        "asset": {
+          "name": "ShiroBot.Plugin.FileLink.dll",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink/releases/download/v1.1.0/ShiroBot.Plugin.FileLink.dll",
+          "size": 166400,
+          "digest": "sha256:e7bfe6dacfe8b687fc07d2bd872f87161646111e85cc4b20901dac35076731fd"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "video-previewer",
+      "kind": "plugin",
+      "name": "VideoPreviewer",
+      "description": "通过回复视频消息生成视频预览的媒体辅助插件。",
+      "category": "media",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.6.0-rc1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.VideoPreviewer.dll",
+        "version": "1.0",
+        "prerelease": false,
+        "publishedAt": "2026-06-19T14:03:46.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/tag/v1.0",
+        "downloadCount": 5,
+        "asset": {
+          "name": "ShiroBot.Plugin.VideoPreviewer.dll",
+          "url": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/download/v1.0/ShiroBot.Plugin.VideoPreviewer.dll",
+          "size": 17408,
+          "digest": "sha256:e59c9f3f3d8fecc19b1b62d53ee175299ad4811d8de0713f7575f38b0a43e22a"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    }
+  ]
+}

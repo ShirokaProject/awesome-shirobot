@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/ShirokaProject/awesome-shirobot/main/schema/list.v1.schema.json",
+  "title": "ShiroBot marketplace source list v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "plugins"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./schema/list.v1.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "plugins": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "$ref": "#/$defs/plugin"
+      }
+    }
+  },
+  "$defs": {
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shirobot",
+        "framework"
+      ],
+      "properties": {
+        "shirobot": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "framework": {
+          "type": "string",
+          "pattern": "^net[0-9]+(?:\\.[0-9]+)?$"
+        },
+        "platforms": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        }
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "assetPattern"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "assetPattern": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200,
+          "pattern": "^[^/\\\\]+\\.[A-Za-z0-9?*.-]+$"
+        }
+      }
+    },
+    "plugin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "name",
+        "description",
+        "category",
+        "authors",
+        "repository",
+        "license",
+        "compatibility",
+        "release",
+        "deprecated"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "kind": {
+          "const": "plugin"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "authors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/author"
+          }
+        },
+        "repository": {
+          "type": "string",
+          "pattern": "^https://github\\.com/[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?/[A-Za-z0-9._-]+$"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "compatibility": {
+          "$ref": "#/$defs/compatibility"
+        },
+        "release": {
+          "$ref": "#/$defs/release"
+        },
+        "deprecated": {
+          "type": "boolean"
+        },
+        "deprecationReason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "deprecated": {
+                "const": true
+              }
+            },
+            "required": [
+              "deprecated"
+            ]
+          },
+          "then": {
+            "required": [
+              "deprecationReason"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

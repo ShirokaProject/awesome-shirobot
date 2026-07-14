@@ -1,0 +1,88 @@
+name: Refresh marketplace distribution
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "list.json"
+      - "schema/**"
+      - "scripts/**"
+      - "package.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-marketplace
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Refresh distribution branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BRANCH="automation/refresh-marketplace"
+          PUSH_URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          remote_sha=""
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
+            remote_sha="$(git rev-parse "origin/$BRANCH")"
+            git show "origin/$BRANCH:dist/marketplace.v1.json" > "$RUNNER_TEMP/previous-marketplace.json" || true
+            git show "origin/$BRANCH:dist/marketplace.v1.json.sha256" > "$RUNNER_TEMP/previous-marketplace.sha256" || true
+            if [ -s "$RUNNER_TEMP/previous-marketplace.json" ]; then
+              cp "$RUNNER_TEMP/previous-marketplace.json" dist/marketplace.v1.json
+            fi
+            if [ -s "$RUNNER_TEMP/previous-marketplace.sha256" ]; then
+              cp "$RUNNER_TEMP/previous-marketplace.sha256" dist/marketplace.v1.json.sha256
+            fi
+          fi
+
+          node scripts/build-market.mjs
+
+          mkdir -p "$RUNNER_TEMP/marketplace-dist"
+          cp dist/marketplace.v1.json dist/marketplace.v1.json.sha256 "$RUNNER_TEMP/marketplace-dist/"
+
+          if [ -n "$remote_sha" ]; then
+            if cmp -s "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json" "$RUNNER_TEMP/previous-marketplace.json" \
+              && cmp -s "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json.sha256" "$RUNNER_TEMP/previous-marketplace.sha256"; then
+              echo "Marketplace distribution is already current."
+              exit 0
+            fi
+          fi
+
+          git switch --force-create "$BRANCH" "$GITHUB_SHA"
+          cp "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json" dist/marketplace.v1.json
+          cp "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json.sha256" dist/marketplace.v1.json.sha256
+
+          git add dist/marketplace.v1.json dist/marketplace.v1.json.sha256
+          git commit -m "chore: refresh marketplace distribution"
+          if [ -n "$remote_sha" ]; then
+            git push --force-with-lease="refs/heads/$BRANCH:$remote_sha" "$PUSH_URL" "HEAD:refs/heads/$BRANCH"
+          else
+            git push "$PUSH_URL" "HEAD:refs/heads/$BRANCH"
+          fi

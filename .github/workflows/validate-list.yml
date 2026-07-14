@@ -1,0 +1,47 @@
+name: Validate marketplace list
+
+on:
+  pull_request_target:
+    paths:
+      - "list.json"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Read only the proposed list.json
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git fetch --no-tags origin "pull/${PR_NUMBER}/head:refs/remotes/origin/marketplace-pr"
+          mapfile -t changed_files < <(git diff --name-only "$BASE_SHA" refs/remotes/origin/marketplace-pr)
+          for path in "${changed_files[@]}"; do
+            if [ "$path" != "list.json" ]; then
+              echo "Marketplace contribution PRs may only change list.json: $path"
+              exit 1
+            fi
+          done
+
+          git show refs/remotes/origin/marketplace-pr:list.json > list.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Validate source list and releases
+        run: node scripts/build-market.mjs --validate-only
