@@ -80,7 +80,9 @@ jobs:
           cp "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json.sha256" dist/marketplace.v1.json.sha256
 
           git add dist/marketplace.v1.json dist/marketplace.v1.json.sha256
-          git commit -m "chore: refresh marketplace distribution"
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh marketplace distribution"
+          fi
           if [ -n "$remote_sha" ]; then
             git push --force-with-lease="refs/heads/$BRANCH:$remote_sha" "$PUSH_URL" "HEAD:refs/heads/$BRANCH"
           else
