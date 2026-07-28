@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-14T09:34:18.751Z",
+  "generatedAt": "2026-07-28T05:26:36.404Z",
   "source": "https://github.com/ShirokaProject/awesome-shirobot/blob/main/list.json",
   "plugins": [
     {
@@ -68,7 +68,7 @@
         "prerelease": false,
         "publishedAt": "2026-06-17T09:22:04.000Z",
         "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.AvaloniaDemo/releases/tag/v0.6",
-        "downloadCount": 0,
+        "downloadCount": 1,
         "asset": {
           "name": "ShiroBot.AvaloniaDemoPlugin.dll",
           "url": "https://github.com/ShirokaProject/Shirobot.Plugin.AvaloniaDemo/releases/download/v0.6/ShiroBot.AvaloniaDemoPlugin.dll",
@@ -185,7 +185,7 @@
         "prerelease": false,
         "publishedAt": "2026-06-19T14:03:46.000Z",
         "pageUrl": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/tag/v1.0",
-        "downloadCount": 5,
+        "downloadCount": 6,
         "asset": {
           "name": "ShiroBot.Plugin.VideoPreviewer.dll",
           "url": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/download/v1.0/ShiroBot.Plugin.VideoPreviewer.dll",
