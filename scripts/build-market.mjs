@@ -11,6 +11,10 @@ const sourcePath = resolve(rootDir, "list.json");
 const schemaPath = resolve(rootDir, "schema/list.v1.schema.json");
 const outputPath = resolve(rootDir, "dist/marketplace.v1.json");
 const checksumPath = `${outputPath}.sha256`;
+const adaptersSourcePath = resolve(rootDir, "adapters.json");
+const adaptersSchemaPath = resolve(rootDir, "schema/adapters.v1.schema.json");
+const adaptersOutputPath = resolve(rootDir, "dist/adapters.v1.json");
+const adaptersChecksumPath = `${adaptersOutputPath}.sha256`;
 const maxAssetBytes = 100 * 1024 * 1024;
 const validateOnly = process.argv.includes("--validate-only");
 const unknownArguments = process.argv.slice(2).filter((argument) => argument !== "--validate-only");
@@ -22,41 +26,59 @@ try {
 
   const source = await readJson(sourcePath, "source list");
   const schema = await readJson(schemaPath, "JSON Schema");
+  const adaptersSource = await readJson(adaptersSourcePath, "adapter source list");
+  const adaptersSchema = await readJson(adaptersSchemaPath, "adapter JSON Schema");
 
   if (schema.$id !== "https://raw.githubusercontent.com/ShirokaProject/awesome-shirobot/main/schema/list.v1.schema.json") {
     throw new Error("schema/list.v1.schema.json has an unexpected or missing $id");
   }
+  if (adaptersSchema.$id !== "https://raw.githubusercontent.com/ShirokaProject/awesome-shirobot/main/schema/adapters.v1.schema.json") {
+    throw new Error("schema/adapters.v1.schema.json has an unexpected or missing $id");
+  }
 
   const validatedPlugins = validateSource(source);
-  const resolutionResults = await settleWithConcurrency(
+  const validatedAdapters = validateAdaptersSource(adaptersSource);
+  const [pluginResolutionResults, adapterResolutionResults] = await Promise.all([
+    settleWithConcurrency(
     validatedPlugins,
     4,
     ({ plugin, repository, assetMatcher }) => resolvePlugin(plugin, repository, assetMatcher),
-  );
+    ),
+    settleWithConcurrency(
+      validatedAdapters,
+      4,
+      ({ adapter, repository, assetMatcher }) => resolvePlugin(adapter, repository, assetMatcher),
+    ),
+  ]);
 
-  const failures = resolutionResults
-    .map((result, index) => ({ result, plugin: validatedPlugins[index].plugin }))
+  const failures = [...pluginResolutionResults
+    .map((result, index) => ({ result, item: validatedPlugins[index].plugin })), ...adapterResolutionResults
+    .map((result, index) => ({ result, item: validatedAdapters[index].adapter }))]
     .filter(({ result }) => result.status === "rejected")
-    .map(({ result, plugin }) => `- ${plugin.id}: ${formatError(result.reason)}`);
+    .map(({ result, item }) => `- ${item.id}: ${formatError(result.reason)}`);
 
   if (failures.length > 0) {
     throw new Error(`GitHub release validation failed:\n${failures.join("\n")}`);
   }
 
-  const plugins = resolutionResults
+  const plugins = pluginResolutionResults
+    .map((result) => result.value)
+    .sort((left, right) => left.id < right.id ? -1 : left.id > right.id ? 1 : 0);
+  const adapters = adapterResolutionResults
     .map((result) => result.value)
     .sort((left, right) => left.id < right.id ? -1 : left.id > right.id ? 1 : 0);
 
-  for (const plugin of plugins) {
-    if (plugin.health.status !== "available") {
-      console.warn(`Warning: ${plugin.id}: ${plugin.health.message}`);
+  for (const item of [...plugins, ...adapters]) {
+    if (item.health.status !== "available") {
+      console.warn(`Warning: ${item.id}: ${item.health.message}`);
     }
   }
 
   if (validateOnly) {
-    console.log(`Validated list.json, repository URLs, and GitHub releases for ${plugins.length} plugins.`);
+    console.log(`Validated list.json and adapters.json, repository URLs, and GitHub releases for ${plugins.length} plugins and ${adapters.length} adapters.`);
   } else {
     await writeMarketplace(plugins);
+    await writeAdapters(adapters);
   }
 } catch (error) {
   console.error(`Marketplace build failed: ${formatError(error)}`);
@@ -155,6 +177,72 @@ function validateSource(value) {
     if (repository && assetMatcher) {
       validated.push({ plugin, repository, assetMatcher });
     }
+  }
+
+  throwValidationErrors(errors);
+  return validated;
+}
+
+function validateAdaptersSource(value) {
+  const errors = [];
+
+  if (!checkObject(value, "adapters.json", ["$schema", "schemaVersion", "adapters"], ["$schema", "schemaVersion", "adapters"], errors)) {
+    throwValidationErrors(errors);
+  }
+  if (value.$schema !== "./schema/adapters.v1.schema.json") {
+    errors.push('adapters.json.$schema must be "./schema/adapters.v1.schema.json"');
+  }
+  if (value.schemaVersion !== 1) {
+    errors.push("adapters.json.schemaVersion must be 1");
+  }
+  if (!Array.isArray(value.adapters)) {
+    errors.push("adapters.json.adapters must be an array");
+    throwValidationErrors(errors);
+  }
+  if (value.adapters.length > 200) {
+    errors.push("adapters.json.adapters must contain at most 200 entries");
+  }
+
+  const ids = new Set();
+  const repositories = new Set();
+  const validated = [];
+  for (const [index, adapter] of value.adapters.entries()) {
+    const path = `adapters.json.adapters[${index}]`;
+    const requiredKeys = ["id", "kind", "name", "description", "authors", "repository", "platform", "protocol", "compatibility", "release", "deprecated"];
+    if (!checkObject(adapter, path, requiredKeys, [...requiredKeys, "deprecationReason"], errors)) {
+      continue;
+    }
+
+    checkString(adapter.id, `${path}.id`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
+    if (adapter.kind !== "adapter") errors.push(`${path}.kind must be "adapter"`);
+    checkString(adapter.name, `${path}.name`, errors, { maxLength: 100 });
+    checkString(adapter.description, `${path}.description`, errors, { maxLength: 500 });
+    checkAuthors(adapter.authors, `${path}.authors`, errors);
+    checkString(adapter.platform, `${path}.platform`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
+    checkString(adapter.protocol, `${path}.protocol`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
+    checkCompatibility(adapter.compatibility, `${path}.compatibility`, errors);
+    const assetMatcher = checkRelease(adapter.release, `${path}.release`, errors);
+    if (typeof adapter.deprecated !== "boolean") errors.push(`${path}.deprecated must be a boolean`);
+    if (adapter.deprecated === true || adapter.deprecationReason !== undefined) {
+      checkString(adapter.deprecationReason, `${path}.deprecationReason`, errors, { maxLength: 500 });
+    }
+
+    let repository;
+    try {
+      repository = parseRepository(adapter.repository);
+    } catch (error) {
+      errors.push(`${path}.repository ${formatError(error)}`);
+    }
+    if (typeof adapter.id === "string") {
+      const canonicalId = adapter.id.toLowerCase();
+      if (ids.has(canonicalId)) errors.push(`${path}.id duplicates another adapter ID: ${adapter.id}`);
+      ids.add(canonicalId);
+    }
+    if (repository) {
+      if (repositories.has(repository.canonical)) errors.push(`${path}.repository duplicates another repository: ${adapter.repository}`);
+      repositories.add(repository.canonical);
+    }
+    if (repository && assetMatcher) validated.push({ adapter, repository, assetMatcher });
   }
 
   throwValidationErrors(errors);
@@ -645,6 +733,33 @@ async function writeMarketplace(plugins) {
     outputChanged || checksumChanged
       ? `Wrote dist/marketplace.v1.json for ${plugins.length} plugins.`
       : `Marketplace is unchanged for ${plugins.length} plugins.`,
+  );
+}
+
+async function writeAdapters(adapters) {
+  const stableDocument = {
+    schemaVersion: 1,
+    source: "https://github.com/ShirokaProject/awesome-shirobot/blob/main/adapters.json",
+    adapters,
+  };
+  const previous = await readOptionalJson(adaptersOutputPath);
+  const previousStable = previous && typeof previous === "object"
+    ? { schemaVersion: previous.schemaVersion, source: previous.source, adapters: previous.adapters }
+    : undefined;
+  const previousDateIsValid = typeof previous?.generatedAt === "string"
+    && !Number.isNaN(Date.parse(previous.generatedAt));
+  const generatedAt = previousDateIsValid && isDeepStrictEqual(previousStable, stableDocument)
+    ? previous.generatedAt
+    : new Date().toISOString();
+  const document = { schemaVersion: stableDocument.schemaVersion, generatedAt, source: stableDocument.source, adapters: stableDocument.adapters };
+  const output = `${JSON.stringify(document, null, 2)}\n`;
+  const checksum = createHash("sha256").update(output).digest("hex");
+  const outputChanged = await writeIfChanged(adaptersOutputPath, output);
+  const checksumChanged = await writeIfChanged(adaptersChecksumPath, `${checksum}  adapters.v1.json\n`);
+  console.log(
+    outputChanged || checksumChanged
+      ? `Wrote dist/adapters.v1.json for ${adapters.length} adapters.`
+      : `Adapter marketplace is unchanged for ${adapters.length} adapters.`,
   );
 }
 

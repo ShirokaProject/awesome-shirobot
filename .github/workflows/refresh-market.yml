@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - "list.json"
+      - "adapters.json"
       - "schema/**"
       - "scripts/**"
       - "package.json"
@@ -54,22 +55,32 @@ jobs:
             remote_sha="$(git rev-parse "origin/$BRANCH")"
             git show "origin/$BRANCH:dist/marketplace.v1.json" > "$RUNNER_TEMP/previous-marketplace.json" || true
             git show "origin/$BRANCH:dist/marketplace.v1.json.sha256" > "$RUNNER_TEMP/previous-marketplace.sha256" || true
+            git show "origin/$BRANCH:dist/adapters.v1.json" > "$RUNNER_TEMP/previous-adapters.json" || true
+            git show "origin/$BRANCH:dist/adapters.v1.json.sha256" > "$RUNNER_TEMP/previous-adapters.sha256" || true
             if [ -s "$RUNNER_TEMP/previous-marketplace.json" ]; then
               cp "$RUNNER_TEMP/previous-marketplace.json" dist/marketplace.v1.json
             fi
             if [ -s "$RUNNER_TEMP/previous-marketplace.sha256" ]; then
               cp "$RUNNER_TEMP/previous-marketplace.sha256" dist/marketplace.v1.json.sha256
             fi
+            if [ -s "$RUNNER_TEMP/previous-adapters.json" ]; then
+              cp "$RUNNER_TEMP/previous-adapters.json" dist/adapters.v1.json
+            fi
+            if [ -s "$RUNNER_TEMP/previous-adapters.sha256" ]; then
+              cp "$RUNNER_TEMP/previous-adapters.sha256" dist/adapters.v1.json.sha256
+            fi
           fi
 
           node scripts/build-market.mjs
 
           mkdir -p "$RUNNER_TEMP/marketplace-dist"
-          cp dist/marketplace.v1.json dist/marketplace.v1.json.sha256 "$RUNNER_TEMP/marketplace-dist/"
+          cp dist/marketplace.v1.json dist/marketplace.v1.json.sha256 dist/adapters.v1.json dist/adapters.v1.json.sha256 "$RUNNER_TEMP/marketplace-dist/"
 
           if [ -n "$remote_sha" ]; then
             if cmp -s "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json" "$RUNNER_TEMP/previous-marketplace.json" \
-              && cmp -s "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json.sha256" "$RUNNER_TEMP/previous-marketplace.sha256"; then
+               && cmp -s "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json.sha256" "$RUNNER_TEMP/previous-marketplace.sha256" \
+               && cmp -s "$RUNNER_TEMP/marketplace-dist/adapters.v1.json" "$RUNNER_TEMP/previous-adapters.json" \
+               && cmp -s "$RUNNER_TEMP/marketplace-dist/adapters.v1.json.sha256" "$RUNNER_TEMP/previous-adapters.sha256"; then
               echo "Marketplace distribution is already current."
               exit 0
             fi
@@ -78,8 +89,10 @@ jobs:
           git switch --force-create "$BRANCH" "$GITHUB_SHA"
           cp "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json" dist/marketplace.v1.json
           cp "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json.sha256" dist/marketplace.v1.json.sha256
+          cp "$RUNNER_TEMP/marketplace-dist/adapters.v1.json" dist/adapters.v1.json
+          cp "$RUNNER_TEMP/marketplace-dist/adapters.v1.json.sha256" dist/adapters.v1.json.sha256
 
-          git add dist/marketplace.v1.json dist/marketplace.v1.json.sha256
+          git add dist/marketplace.v1.json dist/marketplace.v1.json.sha256 dist/adapters.v1.json dist/adapters.v1.json.sha256
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh marketplace distribution"
           fi

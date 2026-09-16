@@ -1,8 +1,8 @@
-# ShiroBot 插件市场清单
+# ShiroBot 市场清单
 
-本仓库维护 ShiroBot 插件市场的公开元数据。`list.json` 是外部贡献者提交 PR 时唯一需要修改、也是唯一可信的源清单；`dist/marketplace.v1.json` 和对应 SHA-256 文件由脚本根据源清单及 GitHub Release 元数据生成。
+本仓库维护 ShiroBot 插件和 Adapter 市场的公开元数据。`list.json` 与 `adapters.json` 是独立的可信源清单；生成文件由脚本根据源清单及 GitHub Release 元数据生成。
 
-当前市场只收录 `plugin`，不收录 adapter。仓库中的清单与工具使用 MIT License；各插件源码和 Release 资产继续适用其各自声明的许可证。
+现有插件宿主继续固定读取 v1 插件 URL，Adapter 使用独立的 v1 URL，互不改变契约。仓库中的清单与工具使用 MIT License；各项目源码和 Release 资产继续适用其各自声明的许可证。
 
 ## 仓库文件
 
@@ -11,21 +11,25 @@
 - `scripts/build-market.mjs`：仅使用 Node.js 24 内置 API 的校验和生成脚本。
 - `dist/marketplace.v1.json`：供客户端读取的生成清单。
 - `dist/marketplace.v1.json.sha256`：生成清单的 SHA-256；每个插件资产另有独立的 `asset.digest`。
+- `adapters.json`：schemaVersion 1 的 Adapter 源清单；初始时允许 `adapters` 为空。
+- `schema/adapters.v1.schema.json`：Adapter 源清单 JSON Schema。
+- `dist/adapters.v1.json`：供 Adapter 宿主固定读取的生成清单。
+- `dist/adapters.v1.json.sha256`：Adapter 生成清单的 SHA-256。
 
-## 贡献插件
+## 贡献条目
 
-1. Fork 本仓库并只在 `list.json` 中新增或修改插件条目，不要手工编辑 `dist/`。
+1. Fork 本仓库并只在 `list.json` 或 `adapters.json` 中新增或修改对应条目，不要手工编辑 `dist/`。
 2. 确认插件仓库公开可访问，且使用规范的 `https://github.com/OWNER/REPOSITORY` 地址。
 3. 在 GitHub Release 中发布插件资产，并让 `release.assetPattern` 在最新非 draft Release 中只匹配一个已上传文件。
 4. 使用 Node.js 24 运行 `node scripts/build-market.mjs --validate-only`。
-5. 提交 PR，并在说明中写明插件用途、兼容版本、许可证和 Release 资产名称。
+5. 提交 PR，并在说明中写明条目用途、兼容版本、许可证和 Release 资产名称。
 
-PR 校验会检查 Schema、未知字段、ID 和仓库唯一性、GitHub URL、最新非 draft Release 及匹配资产，但不会写入 `dist/`。尚处于孵化阶段且没有 Release 的项目可以设置 `release.required` 为 `false`；这类条目会通过校验，并在生成清单中得到明确的非健康状态。
+PR 校验会检查 Schema、未知字段、ID 和仓库唯一性、GitHub URL、最新非 draft Release 及匹配资产，但不会写入 `dist/`。Adapter 清单可为空。尚处于孵化阶段且没有 Release 的项目可以设置 `release.required` 为 `false`；这类条目会通过校验，并在生成清单中得到明确的非健康状态。
 
 ## 字段说明
 
 - `id`：市场内稳定且唯一的小写 kebab-case ID；发布后不应随意修改。
-- `kind`：当前必须为 `plugin`。adapter 不进入本市场主列表。
+- `kind`：`list.json` 中必须为 `plugin`；`adapters.json` 中必须为 `adapter`。
 - `name`：面向用户的插件名称。
 - `description`：简短说明插件用途和主要能力。
 - `category`：小写 kebab-case 分类，例如 `ai`、`example`、`media`、`utility`。
@@ -38,6 +42,12 @@ PR 校验会检查 Schema、未知字段、ID 和仓库唯一性、GitHub URL、
 - `release.required`：为 `true` 时，无 Release、无匹配资产或匹配不唯一都会使校验失败；为 `false` 时生成健康状态而不是失败。
 - `release.assetPattern`：Release 文件名 glob，仅支持 `*` 和 `?`，不得包含目录。推荐使用精确文件名。
 - `deprecated`：插件是否已弃用；为 `true` 时必须填写 `deprecationReason`。
+
+Adapter 额外字段：
+
+- `platform`：Adapter 面向的平台 ID，使用小写 kebab-case。
+- `protocol`：Adapter 实现的协议 ID，使用小写 kebab-case。
+- `compatibility`、`repository`、`release` 和健康/资产输出契约与插件完全相同。
 
 ## 发布资产要求
 
@@ -62,8 +72,8 @@ node scripts/build-market.mjs
 ## 自动化
 
 - 插件清单 PR 使用 `pull_request_target`，但只检出基准分支上的受信任脚本，再单独读取 PR 的 `list.json`；工作流权限为只读，绝不检出或执行贡献者修改的代码。
-- 每日 UTC 02:17、`main` 清单变更及手动触发时刷新 `dist/`。
-- 有变化时，工作流只使用 `main` 上的受信任脚本生成文件，并更新只承载分发结果的 `automation/refresh-marketplace` 分支。宿主从该分支读取市场数据，因此不依赖 bot PR 的人工合并。
+- 每日 UTC 02:17、`main` 任一源清单变更及手动触发时刷新 `dist/`。
+- 有变化时，工作流只使用 `main` 上的受信任脚本生成文件，并更新只承载分发结果的 `automation/refresh-marketplace` 分支。宿主可固定读取 `https://raw.githubusercontent.com/ShirokaProject/awesome-shirobot/automation/refresh-marketplace/dist/marketplace.v1.json` 或 `https://raw.githubusercontent.com/ShirokaProject/awesome-shirobot/automation/refresh-marketplace/dist/adapters.v1.json`，因此不依赖 bot PR 的人工合并。
 
 ## 安全边界
 
