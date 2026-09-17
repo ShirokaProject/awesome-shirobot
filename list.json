@@ -147,6 +147,30 @@
       "deprecated": false
     },
     {
+      "id": "onebot-server",
+      "kind": "plugin",
+      "name": "OneBot Server",
+      "description": "将 ShiroBot 当前 QQ Adapter 的能力转换为 OneBot 11 HTTP、正向/反向 WebSocket 和 HTTP POST 服务。",
+      "category": "infrastructure",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer",
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.OneBotServer.zip"
+      },
+      "deprecated": false
+    },
+    {
       "id": "video-previewer",
       "kind": "plugin",
       "name": "VideoPreviewer",
