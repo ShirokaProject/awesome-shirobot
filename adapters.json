@@ -1,5 +1,30 @@
 {
   "$schema": "./schema/adapters.v1.schema.json",
   "schemaVersion": 1,
-  "adapters": []
+  "adapters": [
+    {
+      "id": "milky",
+      "kind": "adapter",
+      "name": "Milky",
+      "description": "通过 Milky (QQ NT) 协议接入 QQ 平台的官方适配器，覆盖消息、群管理、文件与事件流。",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Adapter.Milky",
+      "platform": "qq",
+      "protocol": "milky",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Adapter.Milky.zip"
+      },
+      "deprecated": false
+    }
+  ]
 }
