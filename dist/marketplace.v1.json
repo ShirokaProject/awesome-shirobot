@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-16T03:54:16.366Z",
+  "generatedAt": "2026-09-18T12:58:30.994Z",
   "source": "https://github.com/ShirokaProject/awesome-shirobot/blob/main/list.json",
   "plugins": [
     {
@@ -25,16 +25,16 @@
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.AiChatPlugin.dll",
-        "version": "1.2.0",
+        "version": "1.2.1",
         "prerelease": false,
-        "publishedAt": "2026-09-15T17:17:17.000Z",
-        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/tag/v1.2.0",
+        "publishedAt": "2026-09-18T01:30:29.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/tag/v1.2.1",
         "downloadCount": 2,
         "asset": {
           "name": "ShiroBot.AiChatPlugin.dll",
-          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/download/v1.2.0/ShiroBot.AiChatPlugin.dll",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/download/v1.2.1/ShiroBot.AiChatPlugin.dll",
           "size": 183808,
-          "digest": "sha256:0893d49bc07a9d2c9cee6736162a078ef16bc5ddc8bea1dc706c53afb7aa1fbf"
+          "digest": "sha256:82f8670c868e687655119e6e2037411b260f81411dc8d967b5e2235882aacc1c"
         }
       },
       "health": {
@@ -220,16 +220,55 @@
       "release": {
         "required": true,
         "assetPattern": "Shirobot.Plugin.MyParser.zip",
-        "version": "0.5.1",
+        "version": "0.5.2",
         "prerelease": false,
-        "publishedAt": "2026-09-15T17:33:30.000Z",
-        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser/releases/tag/v0.5.1",
-        "downloadCount": 4,
+        "publishedAt": "2026-09-18T01:34:14.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser/releases/tag/v0.5.2",
+        "downloadCount": 3,
         "asset": {
           "name": "Shirobot.Plugin.MyParser.zip",
-          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser/releases/download/v0.5.1/Shirobot.Plugin.MyParser.zip",
-          "size": 1628719,
-          "digest": "sha256:45d64fd915e6221d7d1a64f0eb13aeec04ec100d96cfdc980cf2e9a48b97b4b8"
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser/releases/download/v0.5.2/Shirobot.Plugin.MyParser.zip",
+          "size": 1628824,
+          "digest": "sha256:528a23b9c5a52713f103f75af011eb6fb1f86ec1859ccbb71867f6a2261672c8"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "onebot-server",
+      "kind": "plugin",
+      "name": "OneBot Server",
+      "description": "将 ShiroBot 当前 QQ Adapter 的能力转换为 OneBot 11 HTTP、正向/反向 WebSocket 和 HTTP POST 服务。",
+      "category": "infrastructure",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer",
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.OneBotServer.zip",
+        "version": "0.1.7",
+        "prerelease": false,
+        "publishedAt": "2026-09-18T00:41:38.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer/releases/tag/v0.1.7",
+        "downloadCount": 2,
+        "asset": {
+          "name": "ShiroBot.Plugin.OneBotServer.zip",
+          "url": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer/releases/download/v0.1.7/ShiroBot.Plugin.OneBotServer.zip",
+          "size": 188070,
+          "digest": "sha256:d8432f05939943e8a3fcae32e9067089cda6a45c801ac40b48969c43098be39e"
         }
       },
       "health": {
@@ -263,7 +302,7 @@
         "prerelease": false,
         "publishedAt": "2026-09-15T17:11:31.000Z",
         "pageUrl": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/tag/v1.0.1",
-        "downloadCount": 2,
+        "downloadCount": 4,
         "asset": {
           "name": "ShiroBot.Plugin.VideoPreviewer.dll",
           "url": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/download/v1.0.1/ShiroBot.Plugin.VideoPreviewer.dll",

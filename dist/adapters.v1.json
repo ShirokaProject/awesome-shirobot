@@ -1,6 +1,46 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-16T03:54:16.371Z",
+  "generatedAt": "2026-09-19T07:23:43.504Z",
   "source": "https://github.com/ShirokaProject/awesome-shirobot/blob/main/adapters.json",
-  "adapters": []
+  "adapters": [
+    {
+      "id": "milky",
+      "kind": "adapter",
+      "name": "Milky",
+      "description": "通过 Milky (QQ NT) 协议接入 QQ 平台的官方适配器，覆盖消息、群管理、文件与事件流。",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Adapter.Milky",
+      "platform": "qq",
+      "protocol": "milky",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Adapter.Milky.zip",
+        "version": "2.0.1",
+        "prerelease": false,
+        "publishedAt": "2026-09-18T12:49:40.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Adapter.Milky/releases/tag/v2.0.1",
+        "downloadCount": 2,
+        "asset": {
+          "name": "ShiroBot.Adapter.Milky.zip",
+          "url": "https://github.com/ShirokaProject/Shirobot.Adapter.Milky/releases/download/v2.0.1/ShiroBot.Adapter.Milky.zip",
+          "size": 158336,
+          "digest": "sha256:9aa5d00391b3b6ac92aa55d32eb1c19416e3dc75f601ae104d6e40c664fc3b8c"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    }
+  ]
 }
