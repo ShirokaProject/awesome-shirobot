@@ -49,6 +49,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          # dist/ is generated, not tracked on main, so it may not exist yet.
+          mkdir -p dist
+
           remote_sha=""
           if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
             git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
@@ -92,7 +95,7 @@ jobs:
           cp "$RUNNER_TEMP/marketplace-dist/adapters.v1.json" dist/adapters.v1.json
           cp "$RUNNER_TEMP/marketplace-dist/adapters.v1.json.sha256" dist/adapters.v1.json.sha256
 
-          git add dist/marketplace.v1.json dist/marketplace.v1.json.sha256 dist/adapters.v1.json dist/adapters.v1.json.sha256
+          git add -f dist/marketplace.v1.json dist/marketplace.v1.json.sha256 dist/adapters.v1.json dist/adapters.v1.json.sha256
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh marketplace distribution"
           fi
