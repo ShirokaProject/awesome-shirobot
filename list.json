@@ -171,6 +171,30 @@
       "deprecated": false
     },
     {
+      "id": "rss-subscriber",
+      "kind": "plugin",
+      "name": "RSS Subscriber",
+      "description": "订阅 RSS 和 Atom 源，并向群聊或私聊推送更新。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "PVPGOOD",
+          "url": "https://github.com/PVPGOOD"
+        }
+      ],
+      "repository": "https://github.com/PVPGOOD/Shirobot.Plugin.RssSubscriber",
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": ">=0.9.7 <1.0.0",
+        "framework": "net10.0"
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "Shirobot.Plugin.RssSubscriber.zip"
+      },
+      "deprecated": false
+    },
+    {
       "id": "video-previewer",
       "kind": "plugin",
       "name": "VideoPreviewer",
