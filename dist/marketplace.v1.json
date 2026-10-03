@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-03T08:15:01.242Z",
+  "source": "https://github.com/ShirokaProject/awesome-shirobot/blob/main/list.json",
+  "plugins": [
+    {
+      "id": "ai-chat",
+      "kind": "plugin",
+      "name": "AIChat",
+      "description": "支持 OpenAI-compatible 服务、多模型、共享上下文、图片与文件输入和网络搜索的 AI 聊天插件。",
+      "category": "ai",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat",
+      "license": "NOASSERTION",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.AiChatPlugin.dll",
+        "version": "1.2.1",
+        "prerelease": false,
+        "publishedAt": "2026-09-18T01:30:29.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/tag/v1.2.1",
+        "downloadCount": 11,
+        "asset": {
+          "name": "ShiroBot.AiChatPlugin.dll",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/download/v1.2.1/ShiroBot.AiChatPlugin.dll",
+          "size": 183808,
+          "digest": "sha256:82f8670c868e687655119e6e2037411b260f81411dc8d967b5e2235882aacc1c"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "file-link",
+      "kind": "plugin",
+      "name": "FileLink",
+      "description": "获取群文件直链，并支持从直链下载文件后保存到群文件的实用插件。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.FileLink.zip",
+        "version": "1.1.1",
+        "prerelease": false,
+        "publishedAt": "2026-09-15T17:17:56.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink/releases/tag/v1.1.1",
+        "downloadCount": 9,
+        "asset": {
+          "name": "ShiroBot.Plugin.FileLink.zip",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink/releases/download/v1.1.1/ShiroBot.Plugin.FileLink.zip",
+          "size": 50114,
+          "digest": "sha256:972f3d9edd55092bd9d4919872bb786ee83657deb5ebdab3f6a8df8cb64bbf9d"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "github-view",
+      "kind": "plugin",
+      "name": "GithubView",
+      "description": "在聊天中展示 GitHub 仓库、Issue、README 和 Release，并支持仓库更新订阅。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/greepar/ShiroBot.Plugin.GithubView",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.GithubView.dll",
+        "version": "1.0.2",
+        "prerelease": false,
+        "publishedAt": "2026-09-15T17:12:31.000Z",
+        "pageUrl": "https://github.com/greepar/ShiroBot.Plugin.GithubView/releases/tag/v1.0.2",
+        "downloadCount": 5,
+        "asset": {
+          "name": "ShiroBot.Plugin.GithubView.dll",
+          "url": "https://github.com/greepar/ShiroBot.Plugin.GithubView/releases/download/v1.0.2/ShiroBot.Plugin.GithubView.dll",
+          "size": 551424,
+          "digest": "sha256:26611b6d881df64f0c339cf80b5c08c63bacb1ca76f9a35beb3a21b8aeb58668"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "jm-parser",
+      "kind": "plugin",
+      "name": "JmParser",
+      "description": "解析 JMComic 内容并生成适合聊天发送的图片或文档。",
+      "category": "media",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/greepar/ShiroBot.Plugin.JmParser",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.JmParser.zip",
+        "version": "1.2.0",
+        "prerelease": false,
+        "publishedAt": "2026-09-15T17:15:30.000Z",
+        "pageUrl": "https://github.com/greepar/ShiroBot.Plugin.JmParser/releases/tag/v1.2.0",
+        "downloadCount": 7,
+        "asset": {
+          "name": "ShiroBot.JmParser.zip",
+          "url": "https://github.com/greepar/ShiroBot.Plugin.JmParser/releases/download/v1.2.0/ShiroBot.JmParser.zip",
+          "size": 1430596,
+          "digest": "sha256:e2f31be2fcef7dc899d714e6fffd1cf437f76fcee4ae8d319d827b4e02d67727"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "my-list",
+      "kind": "plugin",
+      "name": "MyList",
+      "description": "通过 WebDAV 提供群文件浏览、映射和管理能力。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "PVPGOOD",
+          "url": "https://github.com/PVPGOOD"
+        }
+      ],
+      "repository": "https://github.com/PVPGOOD/Shirobot.Plugin.MyList",
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "Shirobot.Plugin.MyList.dll",
+        "version": "1.3",
+        "prerelease": false,
+        "publishedAt": "2026-09-15T17:31:42.000Z",
+        "pageUrl": "https://github.com/PVPGOOD/Shirobot.Plugin.MyList/releases/tag/v1.3",
+        "downloadCount": 3,
+        "asset": {
+          "name": "Shirobot.Plugin.MyList.dll",
+          "url": "https://github.com/PVPGOOD/Shirobot.Plugin.MyList/releases/download/v1.3/Shirobot.Plugin.MyList.dll",
+          "size": 97792,
+          "digest": "sha256:a88267369209ef6a8aa608fb903745a13146d5ac06b9894da2c8212abf818b74"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "my-parser",
+      "kind": "plugin",
+      "name": "MyParser",
+      "description": "解析哔哩哔哩、抖音、小红书、微信视频号、网易云音乐等平台链接并生成聊天预览。",
+      "category": "media",
+      "authors": [
+        {
+          "name": "PVPGOOD",
+          "url": "https://github.com/PVPGOOD"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser",
+      "license": "Apache-2.0",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "Shirobot.Plugin.MyParser.zip",
+        "version": "0.5.5",
+        "prerelease": false,
+        "publishedAt": "2026-09-27T11:57:56.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser/releases/tag/v0.5.5",
+        "downloadCount": 3,
+        "asset": {
+          "name": "Shirobot.Plugin.MyParser.zip",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser/releases/download/v0.5.5/Shirobot.Plugin.MyParser.zip",
+          "size": 1526445,
+          "digest": "sha256:88705837797832371cca8dbe5329d6660ba713457ece4d3e8ec52e87f771613e"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "onebot-server",
+      "kind": "plugin",
+      "name": "OneBot Server",
+      "description": "将 ShiroBot 当前 QQ Adapter 的能力转换为 OneBot 11 HTTP、正向/反向 WebSocket 和 HTTP POST 服务。",
+      "category": "infrastructure",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer",
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.OneBotServer.zip",
+        "version": "0.1.7",
+        "prerelease": false,
+        "publishedAt": "2026-09-18T00:41:38.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer/releases/tag/v0.1.7",
+        "downloadCount": 4,
+        "asset": {
+          "name": "ShiroBot.Plugin.OneBotServer.zip",
+          "url": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer/releases/download/v0.1.7/ShiroBot.Plugin.OneBotServer.zip",
+          "size": 188070,
+          "digest": "sha256:d8432f05939943e8a3fcae32e9067089cda6a45c801ac40b48969c43098be39e"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "rss-subscriber",
+      "kind": "plugin",
+      "name": "RSS Subscriber",
+      "description": "订阅 RSS 和 Atom 源，并向群聊或私聊推送更新。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "PVPGOOD",
+          "url": "https://github.com/PVPGOOD"
+        }
+      ],
+      "repository": "https://github.com/PVPGOOD/Shirobot.Plugin.RssSubscriber",
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": ">=0.9.7 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "Shirobot.Plugin.RssSubscriber.zip",
+        "version": "0.1.3",
+        "prerelease": false,
+        "publishedAt": "2026-10-03T07:34:03.000Z",
+        "pageUrl": "https://github.com/PVPGOOD/Shirobot.Plugin.RssSubscriber/releases/tag/v0.1.3",
+        "downloadCount": 1,
+        "asset": {
+          "name": "Shirobot.Plugin.RssSubscriber.zip",
+          "url": "https://github.com/PVPGOOD/Shirobot.Plugin.RssSubscriber/releases/download/v0.1.3/Shirobot.Plugin.RssSubscriber.zip",
+          "size": 110782,
+          "digest": "sha256:d42e59ff253b203967c5ff07c60b1a1862289c42b346bde97eea062ccb20b9a7"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "video-previewer",
+      "kind": "plugin",
+      "name": "VideoPreviewer",
+      "description": "通过回复视频消息生成视频预览的媒体辅助插件。",
+      "category": "media",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer",
+      "license": "GPL-3.0-only",
+      "compatibility": {
+        "shirobot": ">=0.9.1 <1.0.0",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.VideoPreviewer.dll",
+        "version": "1.0.1",
+        "prerelease": false,
+        "publishedAt": "2026-09-15T17:11:31.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/tag/v1.0.1",
+        "downloadCount": 6,
+        "asset": {
+          "name": "ShiroBot.Plugin.VideoPreviewer.dll",
+          "url": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/download/v1.0.1/ShiroBot.Plugin.VideoPreviewer.dll",
+          "size": 16384,
+          "digest": "sha256:37590eb1a1f4e3fe977b0836688fbfb595ce434a6b7b0d6166c36f2f224726bb"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    }
+  ]
+}
