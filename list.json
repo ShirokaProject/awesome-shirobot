@@ -17,7 +17,7 @@
       "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat",
       "license": "NOASSERTION",
       "compatibility": {
-        "shirobot": ">=0.9.1 <1.0.0",
+        "shirobot": ">=0.9.1",
         "framework": "net10.0"
       },
       "release": {
@@ -41,7 +41,7 @@
       "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink",
       "license": "GPL-3.0-only",
       "compatibility": {
-        "shirobot": ">=0.9.1 <1.0.0",
+        "shirobot": ">=0.9.1",
         "framework": "net10.0"
       },
       "release": {
@@ -65,7 +65,7 @@
       "repository": "https://github.com/greepar/ShiroBot.Plugin.GithubView",
       "license": "GPL-3.0-only",
       "compatibility": {
-        "shirobot": ">=0.9.1 <1.0.0",
+        "shirobot": ">=0.9.1",
         "framework": "net10.0"
       },
       "release": {
@@ -89,7 +89,7 @@
       "repository": "https://github.com/greepar/ShiroBot.Plugin.JmParser",
       "license": "GPL-3.0-only",
       "compatibility": {
-        "shirobot": ">=0.9.1 <1.0.0",
+        "shirobot": ">=0.9.1",
         "framework": "net10.0"
       },
       "release": {
@@ -113,7 +113,7 @@
       "repository": "https://github.com/PVPGOOD/Shirobot.Plugin.MyList",
       "license": "MIT",
       "compatibility": {
-        "shirobot": ">=0.9.1 <1.0.0",
+        "shirobot": ">=0.9.1",
         "framework": "net10.0"
       },
       "release": {
@@ -137,7 +137,7 @@
       "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser",
       "license": "Apache-2.0",
       "compatibility": {
-        "shirobot": ">=0.9.1 <1.0.0",
+        "shirobot": ">=0.9.1",
         "framework": "net10.0"
       },
       "release": {
@@ -161,7 +161,7 @@
       "repository": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer",
       "license": "MIT",
       "compatibility": {
-        "shirobot": ">=0.9.1 <1.0.0",
+        "shirobot": ">=0.9.1",
         "framework": "net10.0"
       },
       "release": {
@@ -209,7 +209,7 @@
       "repository": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer",
       "license": "GPL-3.0-only",
       "compatibility": {
-        "shirobot": ">=0.9.1 <1.0.0",
+        "shirobot": ">=0.9.1",
         "framework": "net10.0"
       },
       "release": {
