@@ -17,12 +17,36 @@
       "platform": "qq",
       "protocol": "milky",
       "compatibility": {
-        "shirobot": ">=0.9.1 <1.0.0",
+        "shirobot": ">=0.9.8",
         "framework": "net10.0"
       },
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.Adapter.Milky.zip"
+      },
+      "deprecated": false
+    },
+    {
+      "id": "qq-official",
+      "kind": "adapter",
+      "name": "QQ 官方机器人",
+      "description": "基于 QQ Bot OpenAPI v2 接入 QQ 官方机器人，支持群聊与私聊消息、媒体上传、Markdown、按钮及私聊流式回复。",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Adapter.QQPlatform",
+      "platform": "qq-official",
+      "protocol": "qq-official",
+      "compatibility": {
+        "shirobot": ">=0.9.8",
+        "framework": "net10.0"
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Adapter.QQPlatform.dll"
       },
       "deprecated": false
     }
