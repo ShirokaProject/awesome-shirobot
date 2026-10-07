@@ -53,9 +53,9 @@
     {
       "id": "github-view",
       "kind": "plugin",
-      "name": "GithubView",
-      "description": "在聊天中展示 GitHub 仓库、Issue、README 和 Release，并支持仓库更新订阅。",
-      "category": "utility",
+      "name": "Github 预览插件",
+      "description": "解析 GitHub 仓库链接并渲染相关信息卡片。",
+      "category": "render",
       "authors": [
         {
           "name": "greepar",
@@ -173,9 +173,9 @@
     {
       "id": "rss-subscriber",
       "kind": "plugin",
-      "name": "RSS Subscriber",
+      "name": "RSS 订阅",
       "description": "订阅 RSS 和 Atom 源，并向群聊或私聊推送更新。",
-      "category": "utility",
+      "category": "integration",
       "authors": [
         {
           "name": "PVPGOOD",
