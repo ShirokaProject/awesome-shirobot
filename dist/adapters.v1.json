@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-10T08:37:21.061Z",
+  "source": "https://github.com/ShirokaProject/awesome-shirobot/blob/main/adapters.json",
+  "adapters": [
+    {
+      "id": "milky",
+      "kind": "adapter",
+      "name": "Milky",
+      "description": "通过 Milky (QQ NT) 协议接入 QQ 平台的官方适配器，覆盖消息、群管理、文件与事件流。",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Adapter.Milky",
+      "platform": "qq",
+      "protocol": "milky",
+      "compatibility": {
+        "shirobot": ">=0.9.9",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Adapter.Milky.zip",
+        "version": "2.2.4",
+        "prerelease": false,
+        "publishedAt": "2026-10-09T12:05:23.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Adapter.Milky/releases/tag/v2.2.4",
+        "downloadCount": 3,
+        "asset": {
+          "name": "ShiroBot.Adapter.Milky.zip",
+          "url": "https://github.com/ShirokaProject/Shirobot.Adapter.Milky/releases/download/v2.2.4/ShiroBot.Adapter.Milky.zip",
+          "size": 143947,
+          "digest": "sha256:6c0900a25225535245f97c31f726b2e57daebce050e5ca599eb0479fecfad60e"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "qq-official",
+      "kind": "adapter",
+      "name": "QQ 官方机器人",
+      "description": "基于 QQ Bot OpenAPI v2 接入 QQ 官方机器人，支持群聊与私聊消息、媒体上传、Markdown、按钮及私聊流式回复。",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Adapter.QQPlatform",
+      "platform": "qq-official",
+      "protocol": "qq-official",
+      "compatibility": {
+        "shirobot": ">=0.9.9",
+        "framework": "net10.0"
+      },
+      "deprecated": false,
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Adapter.QQPlatform.dll",
+        "version": "0.4.1",
+        "prerelease": false,
+        "publishedAt": "2026-10-09T10:38:46.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Adapter.QQPlatform/releases/tag/v0.4.1",
+        "downloadCount": 2,
+        "asset": {
+          "name": "ShiroBot.Adapter.QQPlatform.dll",
+          "url": "https://github.com/ShirokaProject/Shirobot.Adapter.QQPlatform/releases/download/v0.4.1/ShiroBot.Adapter.QQPlatform.dll",
+          "size": 534016,
+          "digest": "sha256:0fc59375f1ba930dd2a12aa6d89ddbf9763e937b4d6aaffd3808b63dc2d9d9da"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    }
+  ]
+}
