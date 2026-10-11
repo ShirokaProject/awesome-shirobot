@@ -17,7 +17,7 @@
       "platform": "qq",
       "protocol": "milky",
       "compatibility": {
-        "shirobot": ">=0.9.9",
+        "shirobot": ">=1.0.0",
         "framework": "net10.0"
       },
       "release": {
