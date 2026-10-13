@@ -5,6 +5,7 @@ import { readFile, mkdir, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { isDeepStrictEqual } from "node:util";
 import { fileURLToPath } from "node:url";
+import { inspectAsset } from "./inspect-asset.mjs";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourcePath = resolve(rootDir, "list.json");
@@ -15,11 +16,14 @@ const adaptersSourcePath = resolve(rootDir, "adapters.json");
 const adaptersSchemaPath = resolve(rootDir, "schema/adapters.v1.schema.json");
 const adaptersOutputPath = resolve(rootDir, "dist/adapters.v1.json");
 const adaptersChecksumPath = `${adaptersOutputPath}.sha256`;
-const maxAssetBytes = 100 * 1024 * 1024;
 const validateOnly = process.argv.includes("--validate-only");
+const concurrency = Number(process.env.MARKET_CONCURRENCY ?? 8);
 const unknownArguments = process.argv.slice(2).filter((argument) => argument !== "--validate-only");
 
 try {
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 16) {
+    throw new Error("MARKET_CONCURRENCY must be an integer between 1 and 16");
+  }
   if (unknownArguments.length > 0) {
     throw new Error(`Unknown argument(s): ${unknownArguments.join(", ")}`);
   }
@@ -38,18 +42,13 @@ try {
 
   const validatedPlugins = validateSource(source);
   const validatedAdapters = validateAdaptersSource(adaptersSource);
-  const [pluginResolutionResults, adapterResolutionResults] = await Promise.all([
-    settleWithConcurrency(
-    validatedPlugins,
-    4,
-    ({ plugin, repository, assetMatcher }) => resolvePlugin(plugin, repository, assetMatcher),
-    ),
-    settleWithConcurrency(
-      validatedAdapters,
-      4,
-      ({ adapter, repository, assetMatcher }) => resolvePlugin(adapter, repository, assetMatcher),
-    ),
-  ]);
+  const resolutionResults = await settleWithConcurrency(
+    [...validatedPlugins, ...validatedAdapters],
+    concurrency,
+    ({ plugin, adapter, repository, assetMatcher }) => resolvePlugin(plugin ?? adapter, repository, assetMatcher),
+  );
+  const pluginResolutionResults = resolutionResults.slice(0, validatedPlugins.length);
+  const adapterResolutionResults = resolutionResults.slice(validatedPlugins.length);
 
   const failures = [...pluginResolutionResults
     .map((result, index) => ({ result, item: validatedPlugins[index].plugin })), ...adapterResolutionResults
@@ -71,6 +70,9 @@ try {
   for (const item of [...plugins, ...adapters]) {
     if (item.health.status !== "available") {
       console.warn(`Warning: ${item.id}: ${item.health.message}`);
+    }
+    if (item.compatibility.status === "unknown") {
+      console.warn(`Warning: ${item.id}: ${item.compatibility.message}`);
     }
   }
 
@@ -121,11 +123,10 @@ function validateSource(value) {
       "authors",
       "repository",
       "license",
-      "compatibility",
       "release",
       "deprecated",
     ];
-    const allowedKeys = [...requiredKeys, "deprecationReason"];
+    const allowedKeys = [...requiredKeys, "compatibility", "deprecationReason"];
 
     if (!checkObject(plugin, path, requiredKeys, allowedKeys, errors)) {
       continue;
@@ -140,7 +141,7 @@ function validateSource(value) {
     checkString(plugin.category, `${path}.category`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
     checkAuthors(plugin.authors, `${path}.authors`, errors);
     checkString(plugin.license, `${path}.license`, errors, { maxLength: 200 });
-    checkCompatibility(plugin.compatibility, `${path}.compatibility`, errors);
+    if (plugin.compatibility !== undefined) checkCompatibility(plugin.compatibility, `${path}.compatibility`, errors);
     const assetMatcher = checkRelease(plugin.release, `${path}.release`, errors);
 
     if (typeof plugin.deprecated !== "boolean") {
@@ -208,8 +209,8 @@ function validateAdaptersSource(value) {
   const validated = [];
   for (const [index, adapter] of value.adapters.entries()) {
     const path = `adapters.json.adapters[${index}]`;
-    const requiredKeys = ["id", "kind", "name", "description", "authors", "repository", "platform", "protocol", "compatibility", "release", "deprecated"];
-    if (!checkObject(adapter, path, requiredKeys, [...requiredKeys, "deprecationReason"], errors)) {
+    const requiredKeys = ["id", "kind", "name", "description", "authors", "repository", "platform", "protocol", "release", "deprecated"];
+    if (!checkObject(adapter, path, requiredKeys, [...requiredKeys, "compatibility", "deprecationReason"], errors)) {
       continue;
     }
 
@@ -220,7 +221,7 @@ function validateAdaptersSource(value) {
     checkAuthors(adapter.authors, `${path}.authors`, errors);
     checkString(adapter.platform, `${path}.platform`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
     checkString(adapter.protocol, `${path}.protocol`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
-    checkCompatibility(adapter.compatibility, `${path}.compatibility`, errors);
+    if (adapter.compatibility !== undefined) checkCompatibility(adapter.compatibility, `${path}.compatibility`, errors);
     const assetMatcher = checkRelease(adapter.release, `${path}.release`, errors);
     if (typeof adapter.deprecated !== "boolean") errors.push(`${path}.deprecated must be a boolean`);
     if (adapter.deprecated === true || adapter.deprecationReason !== undefined) {
@@ -500,7 +501,8 @@ async function resolvePlugin(plugin, repository, assetMatcher) {
   const size = requireNonNegativeInteger(asset.size, "release asset size");
   const downloadCount = requireNonNegativeInteger(asset.download_count, "release asset download_count");
   const assetUrl = requireGithubReleaseUrl(asset.browser_download_url, repository, "release asset browser_download_url");
-  const digest = await resolveAssetDigest(asset, assetUrl, size);
+  const expectedDigest = typeof asset.digest === "string" && /^sha256:[a-f0-9]{64}$/i.test(asset.digest) ? asset.digest : undefined;
+  const { digest, contract } = await inspectAsset(assetUrl, size, expectedDigest, requireString(asset.name, "release asset name"));
 
   return marketPlugin(plugin, {
     ...releaseBase,
@@ -511,49 +513,7 @@ async function resolvePlugin(plugin, repository, assetMatcher) {
       size,
       digest,
     },
-  }, "available", "Latest release asset is available.");
-}
-
-async function resolveAssetDigest(asset, assetUrl, expectedSize) {
-  if (expectedSize > maxAssetBytes) {
-    throw new Error(`Release asset exceeds the ${maxAssetBytes} byte marketplace limit`);
-  }
-  if (typeof asset.digest === "string" && /^sha256:[a-f0-9]{64}$/i.test(asset.digest)) {
-    return asset.digest.toLowerCase();
-  }
-
-  let response;
-  try {
-    response = await fetch(assetUrl, {
-      headers: { "User-Agent": "awesome-shirobot-market-builder/1" },
-      redirect: "follow",
-      signal: AbortSignal.timeout(60_000),
-    });
-  } catch (error) {
-    throw new Error(`Release asset download failed for digest verification: ${formatError(error)}`);
-  }
-  if (!response.ok || !response.body) {
-    throw new Error(`Release asset download returned HTTP ${response.status}`);
-  }
-
-  const contentLength = Number(response.headers.get("content-length"));
-  if (Number.isFinite(contentLength) && contentLength > maxAssetBytes) {
-    throw new Error(`Release asset Content-Length exceeds ${maxAssetBytes} bytes`);
-  }
-
-  const hash = createHash("sha256");
-  let received = 0;
-  for await (const chunk of response.body) {
-    received += chunk.byteLength;
-    if (received > maxAssetBytes) {
-      throw new Error(`Release asset download exceeds ${maxAssetBytes} bytes`);
-    }
-    hash.update(chunk);
-  }
-  if (received !== expectedSize) {
-    throw new Error(`Release asset size changed during verification: expected ${expectedSize}, received ${received}`);
-  }
-  return `sha256:${hash.digest("hex")}`;
+  }, "available", "Latest release asset is available.", contract);
 }
 
 function unavailable(plugin, status, message, release = undefined) {
@@ -574,10 +534,15 @@ function unavailable(plugin, status, message, release = undefined) {
   return marketPlugin(plugin, release ?? emptyRelease, status, message);
 }
 
-function marketPlugin(plugin, release, status, message) {
-  const { release: ignoredReleasePolicy, ...metadata } = plugin;
+function marketPlugin(plugin, release, status, message, contract) {
+  const { release: ignoredReleasePolicy, compatibility: ignoredCompatibility, ...metadata } = plugin;
   return {
     ...metadata,
+    compatibility: {
+      shirobot: "unknown",
+      framework: contract?.frameworks?.length === 1 ? contract.frameworks[0].replace(/^\.NETCoreApp,Version=v/, "net") : "unknown",
+      ...(contract ?? { status: "unknown", message: "No release asset to inspect.", api: null, abi: {}, frameworks: [], assemblies: [] }),
+    },
     release,
     health: {
       status,

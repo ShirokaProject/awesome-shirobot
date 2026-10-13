@@ -12,17 +12,59 @@ on:
       - "schema/**"
       - "scripts/**"
       - "package.json"
+      - ".github/workflows/refresh-market.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: refresh-marketplace
   cancel-in-progress: false
 
 jobs:
-  refresh:
+  inspect:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - uses: actions/cache@v4
+        with:
+          path: .cache/contracts-v1
+          key: contracts-v1-${{ runner.os }}-${{ hashFiles('scripts/ContractInspector/**', 'scripts/inspect-asset.mjs') }}-${{ github.run_id }}
+          restore-keys: |
+            contracts-v1-${{ runner.os }}-${{ hashFiles('scripts/ContractInspector/**', 'scripts/inspect-asset.mjs') }}-
+      - name: Restore previous distribution timestamps
+        run: |
+          mkdir -p dist
+          if git fetch origin automation/refresh-marketplace; then
+            for file in marketplace.v1.json adapters.v1.json; do
+              git show "FETCH_HEAD:dist/$file" > "dist/$file" || true
+            done
+          fi
+      - name: Download and statically inspect releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/build-market.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: marketplace-dist
+          path: dist/
+          if-no-files-found: error
+  refresh:
+    needs: inspect
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -31,10 +73,11 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Download inspected distribution
+        uses: actions/download-artifact@v4
         with:
-          node-version: 24
+          name: marketplace-dist
+          path: ${{ runner.temp }}/marketplace-dist
 
       - name: Refresh distribution branch
         env:
@@ -74,10 +117,6 @@ jobs:
             fi
           fi
 
-          node scripts/build-market.mjs
-
-          mkdir -p "$RUNNER_TEMP/marketplace-dist"
-          cp dist/marketplace.v1.json dist/marketplace.v1.json.sha256 dist/adapters.v1.json dist/adapters.v1.json.sha256 "$RUNNER_TEMP/marketplace-dist/"
 
           if [ -n "$remote_sha" ]; then
             if cmp -s "$RUNNER_TEMP/marketplace-dist/marketplace.v1.json" "$RUNNER_TEMP/previous-marketplace.json" \

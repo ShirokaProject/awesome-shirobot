@@ -2,13 +2,13 @@
 
 本仓库维护 ShiroBot 插件和 Adapter 市场的公开元数据。`list.json` 与 `adapters.json` 是独立的可信源清单；生成文件由脚本根据源清单及 GitHub Release 元数据生成。
 
-现有插件宿主继续固定读取 v1 插件 URL，Adapter 使用独立的 v1 URL，互不改变契约。仓库中的清单与工具使用 MIT License；各项目源码和 Release 资产继续适用其各自声明的许可证。
+现有插件宿主继续固定读取 v1 插件 URL，Adapter 使用独立的 v1 URL。兼容字段改为发布产物检测结果，旧客户端需升级以展示 API/ABI。仓库中的清单与工具使用 MIT License；各项目源码和 Release 资产继续适用其各自声明的许可证。
 
 ## 仓库文件
 
 - `list.json`：schemaVersion 1 的源清单，人工评审和合并入口。
 - `schema/list.v1.schema.json`：源清单 JSON Schema。
-- `scripts/build-market.mjs`：仅使用 Node.js 24 内置 API 的校验和生成脚本。
+- `scripts/build-market.mjs`：使用 Node.js 24 下载并校验资产；配合 .NET 10 静态元数据读取器生成兼容信息。
 - `dist/marketplace.v1.json`：供客户端读取的生成清单。
 - `dist/marketplace.v1.json.sha256`：生成清单的 SHA-256；每个插件资产另有独立的 `asset.digest`。
 - `adapters.json`：schemaVersion 1 的 Adapter 源清单；初始时允许 `adapters` 为空。
@@ -21,8 +21,8 @@
 1. Fork 本仓库并只在 `list.json` 或 `adapters.json` 中新增或修改对应条目，不要手工编辑 `dist/`。
 2. 确认插件仓库公开可访问，且使用规范的 `https://github.com/OWNER/REPOSITORY` 地址。
 3. 在 GitHub Release 中发布插件资产，并让 `release.assetPattern` 在最新非 draft Release 中只匹配一个已上传文件。
-4. 使用 Node.js 24 运行 `node scripts/build-market.mjs --validate-only`。
-5. 提交 PR，并在说明中写明条目用途、兼容版本、许可证和 Release 资产名称。
+4. 使用 Node.js 24 和 .NET 10 SDK 运行 `node scripts/build-market.mjs --validate-only`。
+5. 提交 PR，并在说明中写明条目用途、许可证和 Release 资产名称；兼容要求由发布产物自动提取。
 
 PR 校验会检查 Schema、未知字段、ID 和仓库唯一性、GitHub URL、最新非 draft Release 及匹配资产，但不会写入 `dist/`。Adapter 清单可为空。尚处于孵化阶段且没有 Release 的项目可以设置 `release.required` 为 `false`；这类条目会通过校验，并在生成清单中得到明确的非健康状态。
 
@@ -36,9 +36,12 @@ PR 校验会检查 Schema、未知字段、ID 和仓库唯一性、GitHub URL、
 - `authors`：至少一个作者对象；`name` 必填，`url` 可选且必须使用 HTTPS。
 - `repository`：唯一、公开、无 `.git` 后缀的 GitHub HTTPS 仓库地址。
 - `license`：建议填写 SPDX 标识或表达式。无法确认时使用 `NOASSERTION`，这不代表获得了使用授权。
-- `compatibility.shirobot`：插件声明的 ShiroBot 兼容范围。
-- `compatibility.framework`：目标 .NET 框架，例如 `net10.0`。
-- `compatibility.platforms`：可选的平台 ID 数组。
+- 源清单无需填写 `compatibility`；旧条目的该字段暂时允许存在，但不会用于生成结果。
+- 输出 `compatibility.api`：从 Release DLL 的 `ShiroBotApiCompatibility` 属性读取最低 API 和已测试 API；已测试版本不是支持上限。
+- 输出 `compatibility.abi`：从 Release DLL 的程序集引用读取 SDK / Model ABI；同名引用取最高版本，跨主版本冲突标为未知。
+- 输出 `compatibility.framework`、`frameworks`：从目标框架属性生成。
+- 输出 `compatibility.status`：`verified` 表示元数据读取完整，不代表通过运行测试；缺失、损坏、超时等情况为 `unknown`。
+- 输出 `compatibility.shirobot` 暂为 `unknown`：宿主发行版本不能从 API/ABI 推算；客户端应显示 API/ABI，不能把它们当成宿主版本范围。
 - `release.required`：为 `true` 时，无 Release、无匹配资产或匹配不唯一都会使校验失败；为 `false` 时生成健康状态而不是失败。
 - `release.assetPattern`：Release 文件名 glob，仅支持 `*` 和 `?`，不得包含目录。推荐使用精确文件名。
 - `deprecated`：插件是否已弃用；为 `true` 时必须填写 `deprecationReason`。
@@ -67,7 +70,7 @@ node scripts/build-market.mjs --validate-only
 node scripts/build-market.mjs
 ```
 
-脚本读取 `GITHUB_TOKEN` 或 `GH_TOKEN` 以提高 GitHub API 限额；令牌只需要公开仓库读取能力。未提供令牌时使用 GitHub 匿名 API。只有解析后的市场内容发生变化时才更新 `generatedAt`，因此定时任务不会产生纯时间戳变更。
+脚本读取 `GITHUB_TOKEN` 或 `GH_TOKEN` 以提高 GitHub API 限额；令牌只需要公开仓库读取能力。未提供令牌时使用 GitHub 匿名 API。插件和 Adapter 共用默认 8 路并发，可通过 `MARKET_CONCURRENCY` 设置 1–16。GitHub 提供 SHA-256 且缓存命中时跳过资产下载和解析，否则下载验证；读取器仅在需要时编译一次。解析超时或失败不会缓存，允许下次重试。只有解析后的市场内容发生变化时才更新 `generatedAt`，因此定时任务不会产生纯时间戳变更。
 
 ## 自动化
 
@@ -78,7 +81,8 @@ node scripts/build-market.mjs
 ## 安全边界
 
 - 收录仅表示元数据通过格式和发布检查，不代表 ShirokaProject 审计、认可或担保插件代码。
-- 构建脚本会下载匹配的公开 Release 资产以计算 SHA-256，但不会加载或执行其中代码，并对下载大小设置 100 MiB 上限。
+- 构建脚本下载每个条目最新正式 Release 的匹配资产，计算并核对 SHA-256，再使用 PEReader 静态读取元数据，绝不加载或执行插件代码。下载及 ZIP 总展开大小限 100 MiB，ZIP 限 1000 个条目，不向磁盘解压文件路径，解析进程限时 30 秒。
+- 解析结果按 SHA-256 缓存。下载和解析在只读 Action job 中完成，发布 job 仅接收生成的 JSON，不处理插件二进制。
 - `marketplace.v1.json.sha256` 验证市场 JSON；每项 `asset.digest` 验证对应 DLL/ZIP。摘要本身仍依赖本仓库评审和 GitHub 账户安全，不能替代代码审计或签名。
 - 市场客户端必须把名称、描述、URL 和其他贡献者字段视为不可信输入，避免执行其中内容，并在下载前再次检查 HTTPS、主机名、文件大小及用户授权。
 - 插件可能访问网络、文件和机器人权限；安装前应检查仓库、许可证、Release 来源和插件所需权限。

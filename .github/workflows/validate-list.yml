@@ -45,5 +45,9 @@ jobs:
         with:
           node-version: 24
 
-      - name: Validate source lists and releases
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Validate source lists and inspect release metadata
         run: node scripts/build-market.mjs --validate-only

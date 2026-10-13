@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "node scripts/build-market.mjs",
-    "validate": "node scripts/build-market.mjs --validate-only"
+    "validate": "node scripts/build-market.mjs --validate-only",
+    "test": "node --test scripts/tests/*.test.mjs"
   }
 }
