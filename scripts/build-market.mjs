@@ -6,6 +6,7 @@ import { dirname, resolve } from "node:path";
 import { isDeepStrictEqual } from "node:util";
 import { fileURLToPath } from "node:url";
 import { inspectAsset } from "./inspect-asset.mjs";
+import { marketCompatibility } from "./market-compatibility.mjs";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourcePath = resolve(rootDir, "list.json");
@@ -123,10 +124,11 @@ function validateSource(value) {
       "authors",
       "repository",
       "license",
+      "compatibility",
       "release",
       "deprecated",
     ];
-    const allowedKeys = [...requiredKeys, "compatibility", "deprecationReason"];
+    const allowedKeys = [...requiredKeys, "deprecationReason"];
 
     if (!checkObject(plugin, path, requiredKeys, allowedKeys, errors)) {
       continue;
@@ -141,7 +143,7 @@ function validateSource(value) {
     checkString(plugin.category, `${path}.category`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
     checkAuthors(plugin.authors, `${path}.authors`, errors);
     checkString(plugin.license, `${path}.license`, errors, { maxLength: 200 });
-    if (plugin.compatibility !== undefined) checkCompatibility(plugin.compatibility, `${path}.compatibility`, errors);
+    checkCompatibility(plugin.compatibility, `${path}.compatibility`, errors);
     const assetMatcher = checkRelease(plugin.release, `${path}.release`, errors);
 
     if (typeof plugin.deprecated !== "boolean") {
@@ -209,8 +211,8 @@ function validateAdaptersSource(value) {
   const validated = [];
   for (const [index, adapter] of value.adapters.entries()) {
     const path = `adapters.json.adapters[${index}]`;
-    const requiredKeys = ["id", "kind", "name", "description", "authors", "repository", "platform", "protocol", "release", "deprecated"];
-    if (!checkObject(adapter, path, requiredKeys, [...requiredKeys, "compatibility", "deprecationReason"], errors)) {
+    const requiredKeys = ["id", "kind", "name", "description", "authors", "repository", "platform", "protocol", "compatibility", "release", "deprecated"];
+    if (!checkObject(adapter, path, requiredKeys, [...requiredKeys, "deprecationReason"], errors)) {
       continue;
     }
 
@@ -221,7 +223,7 @@ function validateAdaptersSource(value) {
     checkAuthors(adapter.authors, `${path}.authors`, errors);
     checkString(adapter.platform, `${path}.platform`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
     checkString(adapter.protocol, `${path}.protocol`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
-    if (adapter.compatibility !== undefined) checkCompatibility(adapter.compatibility, `${path}.compatibility`, errors);
+    checkCompatibility(adapter.compatibility, `${path}.compatibility`, errors);
     const assetMatcher = checkRelease(adapter.release, `${path}.release`, errors);
     if (typeof adapter.deprecated !== "boolean") errors.push(`${path}.deprecated must be a boolean`);
     if (adapter.deprecated === true || adapter.deprecationReason !== undefined) {
@@ -538,11 +540,7 @@ function marketPlugin(plugin, release, status, message, contract) {
   const { release: ignoredReleasePolicy, compatibility: ignoredCompatibility, ...metadata } = plugin;
   return {
     ...metadata,
-    compatibility: {
-      shirobot: "unknown",
-      framework: contract?.frameworks?.length === 1 ? contract.frameworks[0].replace(/^\.NETCoreApp,Version=v/, "net") : "unknown",
-      ...(contract ?? { status: "unknown", message: "No release asset to inspect.", api: null, abi: {}, frameworks: [], assemblies: [] }),
-    },
+    compatibility: marketCompatibility(ignoredCompatibility, contract),
     release,
     health: {
       status,

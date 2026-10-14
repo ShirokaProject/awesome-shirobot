@@ -104,6 +104,7 @@
         "authors",
         "repository",
         "license",
+        "compatibility",
         "release",
         "deprecated"
       ],

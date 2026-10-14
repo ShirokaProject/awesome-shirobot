@@ -36,12 +36,12 @@ PR 校验会检查 Schema、未知字段、ID 和仓库唯一性、GitHub URL、
 - `authors`：至少一个作者对象；`name` 必填，`url` 可选且必须使用 HTTPS。
 - `repository`：唯一、公开、无 `.git` 后缀的 GitHub HTTPS 仓库地址。
 - `license`：建议填写 SPDX 标识或表达式。无法确认时使用 `NOASSERTION`，这不代表获得了使用授权。
-- 源清单无需填写 `compatibility`；旧条目的该字段暂时允许存在，但不会用于生成结果。
+- 源清单必须填写 `compatibility.shirobot`（宿主发行版本要求）和 `compatibility.framework`（目标框架），可选 `platforms`。生成结果原样保留这些字段，旧版宿主和 Dashboard 仍可读取。
 - 输出 `compatibility.api`：从 Release DLL 的 `ShiroBotApiCompatibility` 属性读取最低 API 和已测试 API；已测试版本不是支持上限。
 - 输出 `compatibility.abi`：从 Release DLL 的程序集引用读取 SDK / Model ABI；同名引用取最高版本，跨主版本冲突标为未知。
-- 输出 `compatibility.framework`、`frameworks`：从目标框架属性生成。
+- 输出 `compatibility.frameworks`：从目标框架属性生成的附加信息；不覆盖清单声明的 `framework`。
 - 输出 `compatibility.status`：`verified` 表示元数据读取完整，不代表通过运行测试；缺失、损坏、超时等情况为 `unknown`。
-- 输出 `compatibility.shirobot` 暂为 `unknown`：宿主发行版本不能从 API/ABI 推算；客户端应显示 API/ABI，不能把它们当成宿主版本范围。
+- API/ABI 扫描结果是附加信息，不覆盖 `shirobot`、`framework`、`platforms`。宿主发行版本不能从 API/ABI 推算；即使扫描失败，清单声明仍然保留。
 - `release.required`：为 `true` 时，无 Release、无匹配资产或匹配不唯一都会使校验失败；为 `false` 时生成健康状态而不是失败。
 - `release.assetPattern`：Release 文件名 glob，仅支持 `*` 和 `?`，不得包含目录。推荐使用精确文件名。
 - `deprecated`：插件是否已弃用；为 `true` 时必须填写 `deprecationReason`。
