@@ -16,10 +16,6 @@
       "repository": "https://github.com/ShirokaProject/Shirobot.Adapter.Milky",
       "platform": "qq",
       "protocol": "milky",
-      "compatibility": {
-        "shirobot": ">=1.0.0",
-        "framework": "net10.0"
-      },
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.Adapter.Milky.zip"
@@ -40,10 +36,6 @@
       "repository": "https://github.com/ShirokaProject/Shirobot.Adapter.QQPlatform",
       "platform": "qq-official",
       "protocol": "qq-official",
-      "compatibility": {
-        "shirobot": ">=0.9.9",
-        "framework": "net10.0"
-      },
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.Adapter.QQPlatform.dll"

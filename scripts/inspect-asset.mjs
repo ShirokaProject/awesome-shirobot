@@ -12,7 +12,7 @@ let build;
 
 export async function inspectAsset(url, size, expectedDigest, name) {
   if (size > limit) throw new Error("Release asset exceeds marketplace size limit");
-  const cacheDir = resolve(import.meta.dirname, "../.cache/contracts-v1");
+  const cacheDir = resolve(import.meta.dirname, "../.cache/contracts-v2");
   if (expectedDigest) {
     const cachePath = join(cacheDir, expectedDigest.toLowerCase().slice(7) + ".json");
     try { return { digest: expectedDigest.toLowerCase(), contract: JSON.parse(await readFile(cachePath, "utf8")) }; }
@@ -49,7 +49,7 @@ export async function inspectAsset(url, size, expectedDigest, name) {
       contract = JSON.parse(stdout);
       parsed = true;
     } catch {
-      contract = { status: "unknown", message: "Release metadata could not be safely inspected.", api: null, abi: {}, frameworks: [], assemblies: [] };
+      contract = { status: "unknown", message: "Release metadata could not be safely inspected.", abi: {}, frameworks: [], assemblies: [] };
     }
   } finally { await rm(dir, { recursive: true, force: true }); }
   await mkdir(cacheDir, { recursive: true });

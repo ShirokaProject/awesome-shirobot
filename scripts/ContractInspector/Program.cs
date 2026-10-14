@@ -8,9 +8,6 @@ const long maxBytes = 100 * 1024 * 1024;
 var assemblies = new List<object>();
 var abi = new SortedDictionary<string, string>(StringComparer.Ordinal);
 var frameworks = new SortedSet<string>(StringComparer.Ordinal);
-var minimums = new List<Version>();
-var tested = new List<Version>();
-bool missingApi = false;
 
 void Inspect(Stream stream, string path)
 {
@@ -30,7 +27,7 @@ void Inspect(Stream stream, string path)
         if (!abi.TryGetValue(name, out previous) || Version.Parse(previous) < reference.Version)
             abi[name] = reference.Version.ToString();
     }
-    string? minimum = null, maximum = null, framework = null;
+    string? framework = null;
     foreach (var handle in reader.GetAssemblyDefinition().GetCustomAttributes())
     {
         var attribute = reader.GetCustomAttribute(handle);
@@ -39,26 +36,13 @@ void Inspect(Stream stream, string path)
         if (parent.Kind != HandleKind.TypeReference) continue;
         var type = reader.GetTypeReference((TypeReferenceHandle)parent);
         var name = reader.GetString(type.Namespace) + "." + reader.GetString(type.Name);
-        if (name != "ShiroBot.SDK.Core.ShiroBotApiCompatibilityAttribute" && name != "System.Runtime.Versioning.TargetFrameworkAttribute") continue;
+        if (name != "System.Runtime.Versioning.TargetFrameworkAttribute") continue;
         var blob = reader.GetBlobReader(attribute.Value);
         if (blob.ReadUInt16() != 1) throw new InvalidDataException("Invalid attribute prolog");
-        if (name == "ShiroBot.SDK.Core.ShiroBotApiCompatibilityAttribute")
-        {
-            minimum = blob.ReadSerializedString();
-            maximum = blob.ReadSerializedString();
-            if (!Version.TryParse(minimum, out var min) || !Version.TryParse(maximum, out var max) || min > max)
-                throw new InvalidDataException("Invalid API compatibility range");
-            minimums.Add(min);
-            tested.Add(max);
-        }
-        else
-        {
-            framework = blob.ReadSerializedString();
-            if (framework is not null) frameworks.Add(framework);
-        }
+        framework = blob.ReadSerializedString();
+        if (framework is not null) frameworks.Add(framework);
     }
-    if (minimum is null) missingApi = true;
-    assemblies.Add(new { path, name = reader.GetString(reader.GetAssemblyDefinition().Name), minimumApi = minimum, testedApi = maximum, framework });
+    assemblies.Add(new { path, name = reader.GetString(reader.GetAssemblyDefinition().Name), framework });
 }
 
 try
@@ -96,11 +80,10 @@ try
         using var input = File.OpenRead(path);
         Inspect(input, Path.GetFileName(path));
     }
-    var known = assemblies.Count > 0 && !missingApi && abi.ContainsKey("ShiroBot.SDK") && frameworks.Count > 0;
+    var known = assemblies.Count > 0 && abi.ContainsKey("ShiroBot.SDK") && frameworks.Count > 0;
     Console.WriteLine(JsonSerializer.Serialize(new {
         status = known ? "verified" : "unknown",
-        message = known ? "Requirements read from release assembly metadata; not a runtime compatibility test." : "Missing API, SDK ABI or target framework metadata.",
-        api = minimums.Count == 0 ? null : new { minimum = minimums.Max()!.ToString(), testedThrough = tested.Min()!.ToString() },
+        message = known ? "Requirements read from release assembly metadata; not a runtime compatibility test." : "Missing SDK ABI or target framework metadata.",
         abi, frameworks, assemblies
     }));
 }

@@ -124,7 +124,6 @@ function validateSource(value) {
       "authors",
       "repository",
       "license",
-      "compatibility",
       "release",
       "deprecated",
     ];
@@ -143,7 +142,6 @@ function validateSource(value) {
     checkString(plugin.category, `${path}.category`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
     checkAuthors(plugin.authors, `${path}.authors`, errors);
     checkString(plugin.license, `${path}.license`, errors, { maxLength: 200 });
-    checkCompatibility(plugin.compatibility, `${path}.compatibility`, errors);
     const assetMatcher = checkRelease(plugin.release, `${path}.release`, errors);
 
     if (typeof plugin.deprecated !== "boolean") {
@@ -211,7 +209,7 @@ function validateAdaptersSource(value) {
   const validated = [];
   for (const [index, adapter] of value.adapters.entries()) {
     const path = `adapters.json.adapters[${index}]`;
-    const requiredKeys = ["id", "kind", "name", "description", "authors", "repository", "platform", "protocol", "compatibility", "release", "deprecated"];
+    const requiredKeys = ["id", "kind", "name", "description", "authors", "repository", "platform", "protocol", "release", "deprecated"];
     if (!checkObject(adapter, path, requiredKeys, [...requiredKeys, "deprecationReason"], errors)) {
       continue;
     }
@@ -223,7 +221,6 @@ function validateAdaptersSource(value) {
     checkAuthors(adapter.authors, `${path}.authors`, errors);
     checkString(adapter.platform, `${path}.platform`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
     checkString(adapter.protocol, `${path}.protocol`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
-    checkCompatibility(adapter.compatibility, `${path}.compatibility`, errors);
     const assetMatcher = checkRelease(adapter.release, `${path}.release`, errors);
     if (typeof adapter.deprecated !== "boolean") errors.push(`${path}.deprecated must be a boolean`);
     if (adapter.deprecated === true || adapter.deprecationReason !== undefined) {
@@ -296,32 +293,6 @@ function checkAuthors(value, path, errors) {
     }
     if (author.url !== undefined) {
       checkHttpsUrl(author.url, `${authorPath}.url`, errors);
-    }
-  }
-}
-
-function checkCompatibility(value, path, errors) {
-  if (!checkObject(value, path, ["shirobot", "framework"], ["shirobot", "framework", "platforms"], errors)) {
-    return;
-  }
-
-  checkString(value.shirobot, `${path}.shirobot`, errors, { maxLength: 100 });
-  checkString(value.framework, `${path}.framework`, errors, { pattern: /^net[0-9]+(?:\.[0-9]+)?$/, maxLength: 30 });
-
-  if (value.platforms !== undefined) {
-    if (!Array.isArray(value.platforms) || value.platforms.length === 0) {
-      errors.push(`${path}.platforms must be a non-empty array when present`);
-      return;
-    }
-    const platforms = new Set();
-    for (const [index, platform] of value.platforms.entries()) {
-      checkString(platform, `${path}.platforms[${index}]`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 50 });
-      if (typeof platform === "string") {
-        if (platforms.has(platform)) {
-          errors.push(`${path}.platforms[${index}] duplicates another platform: ${platform}`);
-        }
-        platforms.add(platform);
-      }
     }
   }
 }
@@ -537,10 +508,10 @@ function unavailable(plugin, status, message, release = undefined) {
 }
 
 function marketPlugin(plugin, release, status, message, contract) {
-  const { release: ignoredReleasePolicy, compatibility: ignoredCompatibility, ...metadata } = plugin;
+  const { release: ignoredReleasePolicy, ...metadata } = plugin;
   return {
     ...metadata,
-    compatibility: marketCompatibility(ignoredCompatibility, contract),
+    compatibility: marketCompatibility(contract),
     release,
     health: {
       status,

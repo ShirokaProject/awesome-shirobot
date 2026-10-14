@@ -39,10 +39,10 @@ jobs:
           dotnet-version: 10.0.x
       - uses: actions/cache@v4
         with:
-          path: .cache/contracts-v1
-          key: contracts-v1-${{ runner.os }}-${{ hashFiles('scripts/ContractInspector/**', 'scripts/inspect-asset.mjs') }}-${{ github.run_id }}
+          path: .cache/contracts-v2
+          key: contracts-v2-${{ runner.os }}-${{ hashFiles('scripts/ContractInspector/**', 'scripts/inspect-asset.mjs') }}-${{ github.run_id }}
           restore-keys: |
-            contracts-v1-${{ runner.os }}-${{ hashFiles('scripts/ContractInspector/**', 'scripts/inspect-asset.mjs') }}-
+            contracts-v2-${{ runner.os }}-${{ hashFiles('scripts/ContractInspector/**', 'scripts/inspect-asset.mjs') }}-
       - name: Restore previous distribution timestamps
         run: |
           mkdir -p dist

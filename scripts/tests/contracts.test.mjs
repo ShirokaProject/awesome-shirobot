@@ -19,13 +19,18 @@ test("static inspection, download verification and cache", async () => {
   const { stdout } = await exec("dotnet", [inspector, fixture]);
   const result = JSON.parse(stdout);
   assert.equal(result.status, "verified");
-  assert.deepEqual(result.api, { minimum: "1.0", testedThrough: "1.0" });
+  assert.equal("api" in result, false);
   assert.equal(result.abi["ShiroBot.SDK"], "1.2.0.0");
   assert.deepEqual(result.frameworks, [".NETCoreApp,Version=v10.0"]);
 
+  await exec("dotnet", ["build", resolve(import.meta.dirname, "Plugin/Plugin.csproj"), "-c", "Release", "--nologo", "-p:DefineConstants=LEGACY_API"]);
+  const legacy = JSON.parse((await exec("dotnet", [inspector, fixture])).stdout);
+  assert.equal(legacy.status, "verified", "invalid legacy API declaration must be ignored");
+  assert.equal("api" in legacy, false);
+  assert.deepEqual(legacy.abi, result.abi);
   const data = await readFile(fixture);
   const digest = `sha256:${createHash("sha256").update(data).digest("hex")}`;
-  const cache = resolve(import.meta.dirname, "../../.cache/contracts-v1", digest.slice(7) + ".json");
+  const cache = resolve(import.meta.dirname, "../../.cache/contracts-v2", digest.slice(7) + ".json");
   const fetch = globalThis.fetch;
   await rm(cache, { force: true });
   let downloads = 0;
