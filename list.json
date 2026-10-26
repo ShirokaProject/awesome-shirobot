@@ -15,7 +15,7 @@
         }
       ],
       "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat",
-      "license": "NOASSERTION",
+      "license": "GPL-3.0-only",
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.AiChatPlugin.dll"
