@@ -146,7 +146,7 @@
       "id": "remote-shell",
       "kind": "plugin",
       "name": "RemoteShell",
-      "description": "默认关闭；按适配器实例和用户白名单执行预设命令或 shell 命令，支持超时、输出限制和单任务执行。",
+      "description": "提供用户在远程执行Shell管理的功能",
       "category": "utility",
       "authors": [
         {
