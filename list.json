@@ -143,6 +143,26 @@
       "deprecated": false
     },
     {
+      "id": "remote-shell",
+      "kind": "plugin",
+      "name": "RemoteShell",
+      "description": "默认关闭；按适配器实例和用户白名单执行预设命令或 shell 命令，支持超时、输出限制和单任务执行。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.RemoteShell",
+      "license": "NOASSERTION",
+      "release": {
+        "required": true,
+        "assetPattern": "RemoteShell.zip"
+      },
+      "deprecated": false
+    },
+    {
       "id": "rss-subscriber",
       "kind": "plugin",
       "name": "RSS 订阅",
