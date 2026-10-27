@@ -7,6 +7,7 @@ import { isDeepStrictEqual } from "node:util";
 import { fileURLToPath } from "node:url";
 import { inspectAsset } from "./inspect-asset.mjs";
 import { marketCompatibility } from "./market-compatibility.mjs";
+import { repositoryLicense } from "./repository-license.mjs";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourcePath = resolve(rootDir, "list.json");
@@ -69,6 +70,9 @@ try {
     .sort((left, right) => left.id < right.id ? -1 : left.id > right.id ? 1 : 0);
 
   for (const item of [...plugins, ...adapters]) {
+    if (item.license === "NOASSERTION") {
+      console.warn(`Warning: ${item.id}: GitHub did not identify a repository license; generated license is NOASSERTION.`);
+    }
     if (item.health.status !== "available") {
       console.warn(`Warning: ${item.id}: ${item.health.message}`);
     }
@@ -123,7 +127,6 @@ function validateSource(value) {
       "category",
       "authors",
       "repository",
-      "license",
       "release",
       "deprecated",
     ];
@@ -141,7 +144,6 @@ function validateSource(value) {
     checkString(plugin.description, `${path}.description`, errors, { maxLength: 500 });
     checkString(plugin.category, `${path}.category`, errors, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, maxLength: 100 });
     checkAuthors(plugin.authors, `${path}.authors`, errors);
-    checkString(plugin.license, `${path}.license`, errors, { maxLength: 200 });
     const assetMatcher = checkRelease(plugin.release, `${path}.release`, errors);
 
     if (typeof plugin.deprecated !== "boolean") {
@@ -425,7 +427,15 @@ function globMatcher(pattern) {
 }
 
 async function resolvePlugin(plugin, repository, assetMatcher) {
-  const releases = await fetchReleases(repository);
+  const [releases, metadata] = await Promise.all([
+    fetchReleases(repository),
+    githubJson(`https://api.github.com/repos/${encodeURIComponent(repository.owner)}/${encodeURIComponent(repository.repo)}`),
+  ]);
+  if (metadata === null || typeof metadata !== "object" || Array.isArray(metadata)) {
+    throw new Error("GitHub repository API returned a non-object response");
+  }
+  // License is generated for plugins and adapters alike, including entries without a release.
+  plugin = { ...plugin, license: repositoryLicense(metadata) };
   const release = releases
     .filter((candidate) => candidate?.draft === false && candidate?.prerelease === false)
     .sort((left, right) => releaseTimestamp(right) - releaseTimestamp(left))[0];

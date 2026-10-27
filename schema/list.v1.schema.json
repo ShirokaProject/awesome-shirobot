@@ -75,7 +75,6 @@
         "category",
         "authors",
         "repository",
-        "license",
         "release",
         "deprecated"
       ],
@@ -111,11 +110,6 @@
         "repository": {
           "type": "string",
           "pattern": "^https://github\\.com/[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?/[A-Za-z0-9._-]+$"
-        },
-        "license": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 200
         },
         "release": {
           "$ref": "#/$defs/release"

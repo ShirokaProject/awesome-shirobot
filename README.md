@@ -2,7 +2,7 @@
 
 本仓库维护 ShiroBot 插件和 Adapter 市场的公开元数据。`list.json` 与 `adapters.json` 是独立的可信源清单；生成文件由脚本根据源清单及 GitHub Release 元数据生成。
 
-现有插件宿主继续固定读取 v1 插件 URL，Adapter 使用独立的 v1 URL。兼容要求从发布产物的 SDK / Model ABI 与目标框架自动生成；源清单不填写兼容版本。仓库中的清单与工具使用 MIT License；各项目源码和 Release 资产继续适用其各自声明的许可证。
+现有插件宿主继续固定读取 v1 插件 URL，Adapter 使用独立的 v1 URL。兼容要求从发布产物的 SDK / Model ABI 与目标框架自动生成；许可证通过 GitHub 仓库 API 自动识别。源清单不填写兼容版本或许可证。仓库中的清单与工具使用 MIT License；各项目源码和 Release 资产继续适用其各自声明的许可证。
 
 ## 仓库文件
 
@@ -22,13 +22,13 @@
 2. 确认插件仓库公开可访问，且使用规范的 `https://github.com/OWNER/REPOSITORY` 地址。
 3. 在 GitHub Release 中发布插件资产，并让 `release.assetPattern` 在最新非 draft Release 中只匹配一个已上传文件。
 4. 使用 Node.js 24 和 .NET 10 SDK 运行 `node scripts/build-market.mjs --validate-only`。
-5. 提交 PR，并在说明中写明条目用途、许可证和 Release 资产名称；兼容要求由发布产物自动提取。
+5. 提交 PR，并在说明中写明条目用途和 Release 资产名称；兼容要求由发布产物自动提取，许可证由 Action 自动读取。
 
 PR 校验会检查 Schema、未知字段、ID 和仓库唯一性、GitHub URL、最新非 draft Release 及匹配资产，但不会写入 `dist/`。Adapter 清单可为空。尚处于孵化阶段且没有 Release 的项目可以设置 `release.required` 为 `false`；这类条目会通过校验，并在生成清单中得到明确的非健康状态。
 
 ## 插件条目示例
 
-把下面的对象加入 `list.json` 的 `plugins` 数组，替换名称、作者、仓库和资产文件名后提交 PR。兼容要求由发布 DLL 自动生成。
+把下面的对象加入 `list.json` 的 `plugins` 数组，替换名称、作者、仓库和资产文件名后提交 PR。兼容要求由发布 DLL 自动生成，许可证由 GitHub 仓库 API 自动提供。
 
 ```json
 {
@@ -39,7 +39,6 @@ PR 校验会检查 Schema、未知字段、ID 和仓库唯一性、GitHub URL、
   "category": "utility",
   "authors": [{ "name": "Your Name", "url": "https://github.com/YOUR_NAME" }],
   "repository": "https://github.com/YOUR_NAME/HelloPlugin",
-  "license": "MIT",
   "release": { "required": true, "assetPattern": "HelloPlugin.zip" },
   "deprecated": false
 }
@@ -54,7 +53,8 @@ PR 校验会检查 Schema、未知字段、ID 和仓库唯一性、GitHub URL、
 - `category`：小写 kebab-case 分类，例如 `ai`、`example`、`media`、`utility`。
 - `authors`：至少一个作者对象；`name` 必填，`url` 可选且必须使用 HTTPS。
 - `repository`：唯一、公开、无 `.git` 后缀的 GitHub HTTPS 仓库地址。
-- `license`：建议填写 SPDX 标识或表达式。无法确认时使用 `NOASSERTION`，这不代表获得了使用授权。
+- 源清单不填写 `license`。Action 自动读取 GitHub 仓库 API 的 `license.spdx_id`，将 GitHub 对仓库当前 LICENSE 文件的识别结果写入分发清单；插件和 Adapter 使用相同规则。
+- 仓库没有 LICENSE 文件或 GitHub 无法识别时，输出 `license: "NOASSERTION"`，不会根据 README、依赖或旧清单猜测许可证。API 请求失败仍会报错，不会误报为无许可证。
 - 源清单不填写 `compatibility`；兼容信息统一从最新 Release 的 DLL 引用和目标框架自动提取。
 - 输出 `compatibility.abi`：从 Release DLL 的程序集引用读取 SDK / Model ABI；同名引用取最高版本，跨主版本冲突标为未知。
 - 输出 `compatibility.frameworks`：发布 DLL 的目标框架列表；唯一目标框架转换为 `compatibility.framework`，例如 `net10.0`。
@@ -93,7 +93,7 @@ node scripts/build-market.mjs
 ## 自动化
 
 - 插件清单 PR 使用 `pull_request_target`，但只检出基准分支上的受信任脚本，再单独读取 PR 的 `list.json`；工作流权限为只读，绝不检出或执行贡献者修改的代码。
-- 每日 UTC 02:17、`main` 任一源清单变更及手动触发时刷新 `dist/`。
+- 每日 UTC 02:17、`main` 任一源清单/生成脚本变更及手动触发时刷新 `dist/`，同步最新 Release 及仓库许可证识别结果。
 - 有变化时，工作流只使用 `main` 上的受信任脚本生成文件，并更新只承载分发结果的 `automation/refresh-marketplace` 分支。宿主可固定读取 `https://raw.githubusercontent.com/ShirokaProject/awesome-shirobot/automation/refresh-marketplace/dist/marketplace.v1.json` 或 `https://raw.githubusercontent.com/ShirokaProject/awesome-shirobot/automation/refresh-marketplace/dist/adapters.v1.json`，因此不依赖 bot PR 的人工合并。
 
 ## 安全边界

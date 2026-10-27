@@ -15,7 +15,6 @@
         }
       ],
       "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat",
-      "license": "GPL-3.0-only",
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.AiChatPlugin.dll"
@@ -35,7 +34,6 @@
         }
       ],
       "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink",
-      "license": "GPL-3.0-only",
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.Plugin.FileLink.zip"
@@ -55,7 +53,6 @@
         }
       ],
       "repository": "https://github.com/greepar/ShiroBot.Plugin.GithubView",
-      "license": "GPL-3.0-only",
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.Plugin.GithubView.dll"
@@ -75,7 +72,6 @@
         }
       ],
       "repository": "https://github.com/greepar/ShiroBot.Plugin.JmParser",
-      "license": "GPL-3.0-only",
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.JmParser.dll"
@@ -95,7 +91,6 @@
         }
       ],
       "repository": "https://github.com/PVPGOOD/Shirobot.Plugin.MyList",
-      "license": "MIT",
       "release": {
         "required": true,
         "assetPattern": "Shirobot.Plugin.MyList.dll"
@@ -115,7 +110,6 @@
         }
       ],
       "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser",
-      "license": "Apache-2.0",
       "release": {
         "required": true,
         "assetPattern": "Shirobot.Plugin.MyParser.zip"
@@ -135,7 +129,6 @@
         }
       ],
       "repository": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer",
-      "license": "MIT",
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.Plugin.OneBotServer.zip"
@@ -155,7 +148,6 @@
         }
       ],
       "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.RemoteShell",
-      "license": "NOASSERTION",
       "release": {
         "required": true,
         "assetPattern": "RemoteShell.zip"
@@ -175,7 +167,6 @@
         }
       ],
       "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.RssSubscriber",
-      "license": "MIT",
       "release": {
         "required": true,
         "assetPattern": "Shirobot.Plugin.RssSubscriber.zip"
@@ -195,7 +186,6 @@
         }
       ],
       "repository": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer",
-      "license": "GPL-3.0-only",
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.Plugin.VideoPreviewer.dll"
@@ -215,7 +205,6 @@
         }
       ],
       "repository": "https://github.com/ShirokaProject/ShiroBot.Plugin.VideoTool",
-      "license": "GPL-3.0-only",
       "release": {
         "required": true,
         "assetPattern": "ShiroBot.Plugin.VideoTool.zip"
