@@ -1,0 +1,609 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-30T08:45:07.982Z",
+  "source": "https://github.com/ShirokaProject/awesome-shirobot/blob/main/list.json",
+  "plugins": [
+    {
+      "id": "ai-chat",
+      "kind": "plugin",
+      "name": "AIChat",
+      "description": "支持 OpenAI-compatible 服务、多模型、共享上下文、图片与文件输入和网络搜索的 AI 聊天插件。",
+      "category": "ai",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat",
+      "deprecated": false,
+      "license": "GPL-3.0",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.Model.QQ": "1.0.0.0",
+          "ShiroBot.SDK": "1.2.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "asset.dll",
+            "name": "ShiroBot.AiChatPlugin",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.AiChatPlugin.dll",
+        "version": "1.4.2",
+        "prerelease": false,
+        "publishedAt": "2026-10-27T05:56:15.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/tag/v1.4.2",
+        "downloadCount": 5,
+        "asset": {
+          "name": "ShiroBot.AiChatPlugin.dll",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.AIChat/releases/download/v1.4.2/ShiroBot.AiChatPlugin.dll",
+          "size": 783872,
+          "digest": "sha256:2cf96b6802cffb52156b3dd57e59efdae2ab1733e401c0e9e90eb2e7be402b66"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "file-link",
+      "kind": "plugin",
+      "name": "FileLink",
+      "description": "获取群文件直链，并支持从直链下载文件后保存到群文件的实用插件。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink",
+      "deprecated": false,
+      "license": "GPL-3.0",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.Model.QQ": "1.0.0.0",
+          "ShiroBot.SDK": "1.0.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "ShiroBot.Plugin.FileLink.dll",
+            "name": "ShiroBot.Plugin.FileLink",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.FileLink.zip",
+        "version": "1.2.2",
+        "prerelease": false,
+        "publishedAt": "2026-10-16T16:14:45.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink/releases/tag/v1.2.2",
+        "downloadCount": 8,
+        "asset": {
+          "name": "ShiroBot.Plugin.FileLink.zip",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.FileLink/releases/download/v1.2.2/ShiroBot.Plugin.FileLink.zip",
+          "size": 36620,
+          "digest": "sha256:a0572c6decf6646e2ca65ae74994727b670e8fe5bfea83e49e240d72665c6d75"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "github-view",
+      "kind": "plugin",
+      "name": "Github 预览插件",
+      "description": "解析 GitHub 仓库链接并渲染相关信息卡片。",
+      "category": "render",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/greepar/ShiroBot.Plugin.GithubView",
+      "deprecated": false,
+      "license": "GPL-3.0",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.SDK": "1.0.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "asset.dll",
+            "name": "ShiroBot.Plugin.GithubView",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.GithubView.dll",
+        "version": "1.1.1",
+        "prerelease": false,
+        "publishedAt": "2026-10-07T05:13:04.000Z",
+        "pageUrl": "https://github.com/greepar/ShiroBot.Plugin.GithubView/releases/tag/v1.1.1",
+        "downloadCount": 9,
+        "asset": {
+          "name": "ShiroBot.Plugin.GithubView.dll",
+          "url": "https://github.com/greepar/ShiroBot.Plugin.GithubView/releases/download/v1.1.1/ShiroBot.Plugin.GithubView.dll",
+          "size": 74240,
+          "digest": "sha256:410bf0ed25c17163e8f47972341733e0572090d5ba4a7b0e78c21f57545c36e1"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "jm-parser",
+      "kind": "plugin",
+      "name": "JmParser",
+      "description": "解析 JMComic 内容并生成适合聊天发送的图片或文档。",
+      "category": "media",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/greepar/ShiroBot.Plugin.JmParser",
+      "deprecated": false,
+      "license": "GPL-3.0",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.SDK": "1.0.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "asset.dll",
+            "name": "ShiroBot.JmParser.merged",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.JmParser.dll",
+        "version": "1.3.5",
+        "prerelease": false,
+        "publishedAt": "2026-10-27T15:37:37.000Z",
+        "pageUrl": "https://github.com/greepar/ShiroBot.Plugin.JmParser/releases/tag/v1.3.5",
+        "downloadCount": 4,
+        "asset": {
+          "name": "ShiroBot.JmParser.dll",
+          "url": "https://github.com/greepar/ShiroBot.Plugin.JmParser/releases/download/v1.3.5/ShiroBot.JmParser.dll",
+          "size": 3737600,
+          "digest": "sha256:895e6189135c226d589bb25118d8267d1de8afbdbadf355b0974c66e7fac94a2"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "my-list",
+      "kind": "plugin",
+      "name": "MyList",
+      "description": "通过 WebDAV 提供群文件浏览、映射和管理能力。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "PVPGOOD",
+          "url": "https://github.com/PVPGOOD"
+        }
+      ],
+      "repository": "https://github.com/PVPGOOD/Shirobot.Plugin.MyList",
+      "deprecated": false,
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.Model.QQ": "1.0.0.0",
+          "ShiroBot.SDK": "1.0.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "asset.dll",
+            "name": "Shirobot.Plugin.MyList",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "Shirobot.Plugin.MyList.dll",
+        "version": "1.4.2",
+        "prerelease": false,
+        "publishedAt": "2026-10-08T14:28:51.000Z",
+        "pageUrl": "https://github.com/PVPGOOD/Shirobot.Plugin.MyList/releases/tag/v1.4.2",
+        "downloadCount": 9,
+        "asset": {
+          "name": "Shirobot.Plugin.MyList.dll",
+          "url": "https://github.com/PVPGOOD/Shirobot.Plugin.MyList/releases/download/v1.4.2/Shirobot.Plugin.MyList.dll",
+          "size": 100352,
+          "digest": "sha256:08866fc621daa92acd78e0ad3d5ebae8ac33115b6822660376f69639636125a4"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "my-parser",
+      "kind": "plugin",
+      "name": "MyParser",
+      "description": "解析哔哩哔哩、抖音、小红书、微信视频号、网易云音乐等平台链接并生成聊天预览。",
+      "category": "media",
+      "authors": [
+        {
+          "name": "PVPGOOD",
+          "url": "https://github.com/PVPGOOD"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser",
+      "deprecated": false,
+      "license": "Apache-2.0",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.Model.QQ": "1.0.0.0",
+          "ShiroBot.SDK": "1.2.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "Shirobot.Plugin.MyParser/Shirobot.Plugin.MyParser.dll",
+            "name": "Shirobot.Plugin.MyParser",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "Shirobot.Plugin.MyParser.zip",
+        "version": "0.6.16",
+        "prerelease": false,
+        "publishedAt": "2026-10-27T15:40:25.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser/releases/tag/v0.6.16",
+        "downloadCount": 3,
+        "asset": {
+          "name": "Shirobot.Plugin.MyParser.zip",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.MyParser/releases/download/v0.6.16/Shirobot.Plugin.MyParser.zip",
+          "size": 1715368,
+          "digest": "sha256:33eb1fa134bf59df783988ca5711427b0f20f350de4dd98b7cce44963d392c0f"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "onebot-server",
+      "kind": "plugin",
+      "name": "OneBot Server",
+      "description": "将 ShiroBot 当前 QQ Adapter 的能力转换为 OneBot 11 HTTP、正向/反向 WebSocket 和 HTTP POST 服务。",
+      "category": "infrastructure",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer",
+      "deprecated": false,
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.Model.QQ": "1.0.0.0",
+          "ShiroBot.SDK": "1.0.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "ShiroBot.Plugin.OneBotServer.dll",
+            "name": "ShiroBot.Plugin.OneBotServer",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.OneBotServer.zip",
+        "version": "0.2.3",
+        "prerelease": false,
+        "publishedAt": "2026-10-16T16:14:20.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer/releases/tag/v0.2.3",
+        "downloadCount": 8,
+        "asset": {
+          "name": "ShiroBot.Plugin.OneBotServer.zip",
+          "url": "https://github.com/ShirokaProject/ShiroBot.Plugin.OneBotServer/releases/download/v0.2.3/ShiroBot.Plugin.OneBotServer.zip",
+          "size": 162959,
+          "digest": "sha256:8200ac1e0ecd86c7385d2b9814be09c4b48c68f6cd7a812794904f64eca8fe0b"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "remote-shell",
+      "kind": "plugin",
+      "name": "RemoteShell",
+      "description": "提供用户在远程执行Shell管理的功能",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.RemoteShell",
+      "deprecated": false,
+      "license": "GPL-3.0",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.SDK": "1.2.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "RemoteShell.dll",
+            "name": "RemoteShell",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "RemoteShell.zip",
+        "version": "0.1.1",
+        "prerelease": false,
+        "publishedAt": "2026-10-27T14:39:54.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.RemoteShell/releases/tag/v0.1.1",
+        "downloadCount": 4,
+        "asset": {
+          "name": "RemoteShell.zip",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.RemoteShell/releases/download/v0.1.1/RemoteShell.zip",
+          "size": 29630,
+          "digest": "sha256:fe8ddeb464e6a99462a580e825582e0e88b3047c3a0f7539ad9cba7f407caa67"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "rss-subscriber",
+      "kind": "plugin",
+      "name": "RSS 订阅",
+      "description": "订阅 RSS 和 Atom 源，并向群聊或私聊推送更新。",
+      "category": "integration",
+      "authors": [
+        {
+          "name": "PVPGOOD",
+          "url": "https://github.com/PVPGOOD"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.RssSubscriber",
+      "deprecated": false,
+      "license": "MIT",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.Model.QQ": "1.0.0.0",
+          "ShiroBot.SDK": "1.0.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "Shirobot.Plugin.RssSubscriber/Shirobot.Plugin.RssSubscriber.dll",
+            "name": "Shirobot.Plugin.RssSubscriber",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "Shirobot.Plugin.RssSubscriber.zip",
+        "version": "0.2.2",
+        "prerelease": false,
+        "publishedAt": "2026-10-08T14:29:28.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shirobot.Plugin.RssSubscriber/releases/tag/v0.2.2",
+        "downloadCount": 14,
+        "asset": {
+          "name": "Shirobot.Plugin.RssSubscriber.zip",
+          "url": "https://github.com/ShirokaProject/Shirobot.Plugin.RssSubscriber/releases/download/v0.2.2/Shirobot.Plugin.RssSubscriber.zip",
+          "size": 112320,
+          "digest": "sha256:9101a28ede06aeae1c8c665e39e1f470283b2fd923f1ca4f81667517d3461c58"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "video-previewer",
+      "kind": "plugin",
+      "name": "VideoPreviewer",
+      "description": "通过回复视频消息生成视频预览的媒体辅助插件。",
+      "category": "media",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer",
+      "deprecated": false,
+      "license": "GPL-3.0",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.Model.QQ": "1.0.0.0",
+          "ShiroBot.SDK": "1.0.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "asset.dll",
+            "name": "ShiroBot.Plugin.VideoPreviewer",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.VideoPreviewer.dll",
+        "version": "1.1.0",
+        "prerelease": false,
+        "publishedAt": "2026-10-07T03:49:38.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/tag/v1.1.0",
+        "downloadCount": 13,
+        "asset": {
+          "name": "ShiroBot.Plugin.VideoPreviewer.dll",
+          "url": "https://github.com/ShirokaProject/Shriobot.Plugin.VideoPreviewer/releases/download/v1.1.0/ShiroBot.Plugin.VideoPreviewer.dll",
+          "size": 16896,
+          "digest": "sha256:2bde6e7e45bd0215f230c1dae88ec90d75bb8493f025f770cd7f40a1af400dce"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    },
+    {
+      "id": "video-tool",
+      "kind": "plugin",
+      "name": "VideoTool 视频工具箱",
+      "description": "视频 GIF、截取、MP3、压缩、封面和信息查询，支持跨平台硬件编码实测、CPU 回退与 WebUI 配置。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "greepar",
+          "url": "https://github.com/greepar"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/ShiroBot.Plugin.VideoTool",
+      "deprecated": false,
+      "license": "GPL-3.0",
+      "compatibility": {
+        "shirobot": "unknown",
+        "framework": "net10.0",
+        "status": "verified",
+        "message": "Requirements read from release assembly metadata; not a runtime compatibility test.",
+        "abi": {
+          "ShiroBot.Model.QQ": "1.0.0.0",
+          "ShiroBot.SDK": "1.2.0.0"
+        },
+        "frameworks": [
+          ".NETCoreApp,Version=v10.0"
+        ],
+        "assemblies": [
+          {
+            "path": "ShiroBot.Plugin.VideoTool.dll",
+            "name": "ShiroBot.Plugin.VideoTool",
+            "framework": ".NETCoreApp,Version=v10.0"
+          }
+        ]
+      },
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.Plugin.VideoTool.zip",
+        "version": "0.1.4",
+        "prerelease": false,
+        "publishedAt": "2026-10-27T16:26:39.000Z",
+        "pageUrl": "https://github.com/ShirokaProject/ShiroBot.Plugin.VideoTool/releases/tag/v0.1.4",
+        "downloadCount": 2,
+        "asset": {
+          "name": "ShiroBot.Plugin.VideoTool.zip",
+          "url": "https://github.com/ShirokaProject/ShiroBot.Plugin.VideoTool/releases/download/v0.1.4/ShiroBot.Plugin.VideoTool.zip",
+          "size": 71767,
+          "digest": "sha256:b735dc7fefb397a20d5fddab498335fc05383333b65938c451b75a2058ca0732"
+        }
+      },
+      "health": {
+        "status": "available",
+        "message": "Latest release asset is available."
+      }
+    }
+  ]
+}
