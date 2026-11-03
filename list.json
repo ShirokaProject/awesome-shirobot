@@ -155,9 +155,9 @@
       "deprecated": false
     },
     {
-      "id": "rss-subscriber",
+      "id": "kotosub",
       "kind": "plugin",
-      "name": "RSS 订阅",
+      "name": "KotoSub",
       "description": "订阅 RSS 和 Atom 源，并向群聊或私聊推送更新。",
       "category": "integration",
       "authors": [
@@ -166,10 +166,10 @@
           "url": "https://github.com/PVPGOOD"
         }
       ],
-      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.RssSubscriber",
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.KotoSub",
       "release": {
         "required": true,
-        "assetPattern": "Shirobot.Plugin.RssSubscriber.zip"
+        "assetPattern": "Shirobot.Plugin.KotoSub.zip"
       },
       "deprecated": false
     },
