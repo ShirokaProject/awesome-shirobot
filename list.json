@@ -210,6 +210,25 @@
         "assetPattern": "ShiroBot.Plugin.VideoTool.zip"
       },
       "deprecated": false
+    },
+    {
+      "id": "shiro-status",
+      "kind": "plugin",
+      "name": "ShiroStatus",
+      "description": "发送 #shiro 查询 ShiroBot 版本、运行环境、运行时长、内存占用和接收消息总数，支持群聊与私聊。",
+      "category": "utility",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/Shirobot.Plugin.ShiroStatus",
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroStatus.dll"
+      },
+      "deprecated": false
     }
   ]
 }
