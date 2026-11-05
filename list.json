@@ -229,6 +229,25 @@
         "assetPattern": "ShiroStatus.dll"
       },
       "deprecated": false
+    },
+    {
+      "id": "meme",
+      "kind": "plugin",
+      "name": "MemePlugin",
+      "description": "本地表情库、群聊盗图采集、QQ 商城表情降级发送，并向其他插件提供表情服务。",
+      "category": "media",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/SparrowAndSnow/Shirobot.Plugin.Meme",
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.MemePlugin.zip"
+      },
+      "deprecated": false
     }
   ]
 }
