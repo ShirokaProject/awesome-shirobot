@@ -58,7 +58,7 @@
       "protocol": "lagrange-v2",
       "release": {
         "required": true,
-        "assetPattern": "ShiroBot.LagrangeAdapter.dll"
+        "assetPattern": "ShiroBot.LagrangeAdapter.zip"
       },
       "deprecated": false
     }
