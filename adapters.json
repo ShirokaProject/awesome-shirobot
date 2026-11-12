@@ -41,6 +41,26 @@
         "assetPattern": "ShiroBot.Adapter.QQPlatform.dll"
       },
       "deprecated": false
+    },
+    {
+      "id": "lagrange",
+      "kind": "adapter",
+      "name": "Lagrange V2",
+      "description": "基于 Lagrange.Core V2 的进程内 QQ 适配器，支持多实例、扫码、账号密码和保存会话快速登录、自定义 AppInfo 与 PC 签名服务。",
+      "authors": [
+        {
+          "name": "ShirokaProject",
+          "url": "https://github.com/ShirokaProject"
+        }
+      ],
+      "repository": "https://github.com/ShirokaProject/ShiroBot.LagrangeAdapter",
+      "platform": "qq",
+      "protocol": "lagrange-v2",
+      "release": {
+        "required": true,
+        "assetPattern": "ShiroBot.LagrangeAdapter.dll"
+      },
+      "deprecated": false
     }
   ]
 }
