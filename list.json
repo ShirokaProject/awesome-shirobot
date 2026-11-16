@@ -79,25 +79,6 @@
       "deprecated": false
     },
     {
-      "id": "my-list",
-      "kind": "plugin",
-      "name": "MyList",
-      "description": "通过 WebDAV 提供群文件浏览、映射和管理能力。",
-      "category": "utility",
-      "authors": [
-        {
-          "name": "PVPGOOD",
-          "url": "https://github.com/PVPGOOD"
-        }
-      ],
-      "repository": "https://github.com/PVPGOOD/Shirobot.Plugin.MyList",
-      "release": {
-        "required": true,
-        "assetPattern": "Shirobot.Plugin.MyList.dll"
-      },
-      "deprecated": false
-    },
-    {
       "id": "my-parser",
       "kind": "plugin",
       "name": "MyParser",
