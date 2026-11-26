@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { createHash } from "node:crypto";
-import { readFile, mkdir, rename, writeFile } from "node:fs/promises";
+import { appendFile, readFile, mkdir, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { isDeepStrictEqual } from "node:util";
 import { fileURLToPath } from "node:url";
@@ -21,6 +21,13 @@ const adaptersChecksumPath = `${adaptersOutputPath}.sha256`;
 const validateOnly = process.argv.includes("--validate-only");
 const concurrency = Number(process.env.MARKET_CONCURRENCY ?? 8);
 const unknownArguments = process.argv.slice(2).filter((argument) => argument !== "--validate-only");
+
+class GitHubHttpError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}
 
 try {
   if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 16) {
@@ -86,6 +93,12 @@ try {
   } else {
     await writeMarketplace(plugins);
     await writeAdapters(adapters);
+    const unavailableRepositories = [...plugins, ...adapters]
+      .filter((item) => item.health.status === "repository-unavailable");
+    if (process.env.GITHUB_STEP_SUMMARY && unavailableRepositories.length > 0) {
+      const lines = unavailableRepositories.map((item) => `- \`${item.kind}/${item.id}\` · ${item.health.message}`);
+      await appendFile(process.env.GITHUB_STEP_SUMMARY, `## Marketplace entries without downloads\n\n${lines.join("\n")}\n`);
+    }
   }
 } catch (error) {
   console.error(`Marketplace build failed: ${formatError(error)}`);
@@ -427,12 +440,21 @@ function globMatcher(pattern) {
 }
 
 async function resolvePlugin(plugin, repository, assetMatcher) {
-  const [releases, metadata] = await Promise.all([
-    fetchReleases(repository),
-    githubJson(`https://api.github.com/repos/${encodeURIComponent(repository.owner)}/${encodeURIComponent(repository.repo)}`),
-  ]);
-  if (metadata === null || typeof metadata !== "object" || Array.isArray(metadata)) {
-    throw new Error("GitHub repository API returned a non-object response");
+  const repositoryUrl = `https://api.github.com/repos/${encodeURIComponent(repository.owner)}/${encodeURIComponent(repository.repo)}`;
+  let releases;
+  let metadata;
+  try {
+    metadata = await githubJson(repositoryUrl);
+    if (metadata === null || typeof metadata !== "object" || Array.isArray(metadata)) {
+      throw new Error("GitHub repository API returned a non-object response");
+    }
+    if (metadata.private === true || ["private", "internal"].includes(metadata.visibility)) {
+      return unavailableRepository(plugin, "GitHub repository is not public.");
+    }
+    releases = await fetchReleases(repository);
+  } catch (error) {
+    if (!(error instanceof GitHubHttpError) || error.status !== 404 || validateOnly) throw error;
+    return unavailableRepository(plugin, "GitHub repository or its releases returned HTTP 404.");
   }
   // License is generated for plugins and adapters alike, including entries without a release.
   plugin = { ...plugin, license: repositoryLicense(metadata) };
@@ -504,7 +526,16 @@ function unavailable(plugin, status, message, release = undefined) {
     throw new Error(message);
   }
 
-  const emptyRelease = {
+  return marketPlugin(plugin, release ?? emptyRelease(plugin), status, message);
+}
+
+function unavailableRepository(plugin, message) {
+  if (validateOnly) throw new Error(message);
+  return marketPlugin({ ...plugin, license: "NOASSERTION" }, emptyRelease(plugin), "repository-unavailable", message);
+}
+
+function emptyRelease(plugin) {
+  return {
     required: plugin.release.required,
     assetPattern: plugin.release.assetPattern,
     version: null,
@@ -514,7 +545,6 @@ function unavailable(plugin, status, message, release = undefined) {
     downloadCount: null,
     asset: null,
   };
-  return marketPlugin(plugin, release ?? emptyRelease, status, message);
 }
 
 function marketPlugin(plugin, release, status, message, contract) {
@@ -578,7 +608,7 @@ async function githubJson(url) {
     }
     const rateLimit = response.headers.get("x-ratelimit-remaining");
     const rateSuffix = rateLimit === null ? "" : `; rate limit remaining: ${rateLimit}`;
-    throw new Error(`GitHub API returned HTTP ${response.status} for ${url}: ${detail}${rateSuffix}`);
+    throw new GitHubHttpError(response.status, `GitHub API returned HTTP ${response.status} for ${url}: ${detail}${rateSuffix}`);
   }
 
   try {
