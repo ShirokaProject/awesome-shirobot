@@ -504,7 +504,9 @@ async function resolvePlugin(plugin, repository, assetMatcher) {
 
   const asset = matchingAssets[0];
   const size = requireNonNegativeInteger(asset.size, "release asset size");
-  const downloadCount = requireNonNegativeInteger(asset.download_count, "release asset download_count");
+  requireNonNegativeInteger(asset.download_count, "release asset download_count");
+  // Counted across every published release, so a new version does not start the plugin back at zero.
+  const downloadCount = totalDownloads(releases, assetMatcher);
   const assetUrl = requireGithubReleaseUrl(asset.browser_download_url, repository, "release asset browser_download_url");
   const expectedDigest = typeof asset.digest === "string" && /^sha256:[a-f0-9]{64}$/i.test(asset.digest) ? asset.digest : undefined;
   const { digest, contract } = await inspectAsset(assetUrl, size, expectedDigest, requireString(asset.name, "release asset name"));
@@ -519,6 +521,18 @@ async function resolvePlugin(plugin, repository, assetMatcher) {
       digest,
     },
   }, "available", "Latest release asset is available.", contract);
+}
+
+function totalDownloads(releases, assetMatcher) {
+  let total = 0;
+  for (const release of releases) {
+    if (release?.draft !== false || release?.prerelease !== false || !Array.isArray(release.assets)) continue;
+    for (const asset of release.assets) {
+      if (asset?.state !== "uploaded" || typeof asset.name !== "string" || !assetMatcher.test(asset.name)) continue;
+      if (Number.isSafeInteger(asset.download_count) && asset.download_count >= 0) total += asset.download_count;
+    }
+  }
+  return total;
 }
 
 function unavailable(plugin, status, message, release = undefined) {

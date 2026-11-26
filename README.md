@@ -77,7 +77,7 @@ Adapter 额外字段：
 - Release tag 作为 `version`；
 - `publishedAt` 和 Release 页面 URL；
 - 资产名称、HTTPS 下载 URL、字节大小和 SHA-256 摘要；
-- GitHub 提供的资产下载次数。
+- 所有非 draft、非 prerelease Release 中匹配 `assetPattern` 的资产下载次数之和（GitHub 统计，新版本不会清零）。
 
 `release.required=false` 时可能出现 `no-release`、`asset-missing` 或 `asset-ambiguous`；正常条目状态为 `available`。自动刷新时，GitHub 返回仓库或 Release 列表 404，或仓库已变为非公开，只将该条目标记为 `repository-unavailable` 并清空下载信息。其余条目继续更新，仓库重新可用后会随下次刷新恢复。提交校验（`--validate-only`）仍会拒绝这类条目。GitHub API 的其他请求错误和无效响应仍会终止刷新，保留上次发布的索引。
 
